@@ -16,13 +16,21 @@
 
 import { describe, expect, it } from 'vitest';
 
-describe('core entry', () => {
-    it('should expose major APIs from index', async () => {
-        const mod = await import('../index');
+import { DocThreadCommentService } from '../doc-thread-comment.service';
 
-        expect(typeof mod.Univer).toBe('function');
-        expect(typeof mod.Skeleton).toBe('function');
-        expect(typeof mod.Workbook).toBe('function');
-        expect(typeof mod.Range).toBe('function');
+describe('DocThreadCommentService', () => {
+    it('should track adding comment lifecycle', () => {
+        const service = new DocThreadCommentService({} as any, {} as any);
+
+        expect(service.addingComment).toBeUndefined();
+
+        const comment = { id: 'c1', startOffset: 1, endOffset: 2 };
+        service.startAdd(comment as any);
+        expect(service.addingComment).toEqual(comment);
+
+        service.endAdd();
+        expect(service.addingComment).toBeUndefined();
+
+        service.dispose();
     });
 });
