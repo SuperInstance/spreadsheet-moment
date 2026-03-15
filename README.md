@@ -1,125 +1,83 @@
-# Spreadsheet Moment - SuperInstance.ai
+# SpreadsheetMoment
 
-**Revolutionary spreadsheet technology where every cell is a SuperInstance agent.**
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Website](https://img.shields.io/badge/Website-LIVE-green.svg)](https://spreadsheet-moment.pages.dev)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange.svg)](https://workers.cloudflare.com/)
-[![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)](https://www.docker.com/)
+**Transform spreadsheet cells into intelligent agents.**
 
----
-
-## 🚀 What is Spreadsheet Moment?
-
-Spreadsheet Moment transforms spreadsheet cells into intelligent agents powered by SuperInstance technology. Each cell becomes a living entity capable of:
-
-- **Autonomous reasoning** and decision-making
-- **Inter-cell communication** and coordination
-- **External I/O connections** (Arduino, ESP32, HTTP, serial ports)
-- **Real-time monitoring** and response
-- **Natural language interaction** via Cocapn/Capitaine frontends
-
-### Core Concept
-
-```
-Traditional Spreadsheet:
-┌───────┬───────┬───────┐
-│   1   │   2   │   3   │  ← Static values
-│ =SUM  │ =A*B │  =C$2 │  ← Static formulas
-└───────┴───────┴───────┘
-
-Spreadsheet Moment:
-┌───────┬───────┬───────┐
-│ 🤖 AI │ 🔌 I/O│ 📊    │  ← Living agents
-│ Agent │ Agent │ Agent │  ← Autonomous cells
-└───────┴───────┴───────┘
-   ↓       ↓       ↓
-External connections, real-time data, intelligent decisions
-```
+Traditional spreadsheets have static values. SpreadsheetMoment transforms every cell into an intelligent agent that can connect to hardware, APIs, and other cells to build complex autonomous systems.
 
 ---
 
-## ✨ Key Features
+## Quick Start
 
-### 🤖 Agent-Based Cells
-Every cell contains an AI agent that can:
-- Reason about data and context
-- Make autonomous decisions
-- Communicate with other cells
-- Learn and adapt over time
+```bash
+git clone https://github.com/SuperInstance/spreadsheet-moment.git
+cd spreadsheet-moment/website
+npm install
+npm run dev
+```
 
-### 🔌 Universal I/O
-Connect cells to anything:
-- **Hardware:** Arduino, ESP32, serial ports, GPIO
-- **Network:** HTTP endpoints, WebSocket streams, APIs
-- **Files:** CSV, JSON, XML, binary feeds
-- **Services:** Databases, message queues, cloud services
+Visit http://localhost:3000
 
-### 🌐 Multi-Frontend Support
-- **Cocapn.ai** - Playful pirate-themed interface
-- **Capitaine.ai** - Professional maritime-themed interface
-- **API** - Direct programmatic access
-
-### ⚡ Deployment Options
-1. **Cloudflare Workers** - Spin up on demand, zero idle cost
-2. **Docker container** - Self-hosted anywhere
-3. **Local server** - Run on your own machine
-4. **Browser extension** - Integration with existing spreadsheets
+**Live Demo:** https://spreadsheet-moment.pages.dev
 
 ---
 
-## 🎯 Use Cases
+## Example
 
-### Smart Manufacturing
-```
-┌────────────────────┬─────────────────┬─────────────────┐
-│ Temperature Sensor │ Motor Control   │ Quality Check    │
-├────────────────────┼─────────────────┼─────────────────┤
-│ Arduino Pin A0     │ ESP32 PWM Out   │ NLP Analysis     │
-│ → Read real-time   │ → Adjust RPM    │ → Detect flaws   │
-└────────────────────┴─────────────────┴─────────────────┘
-```
+```typescript
+import { SuperInstance } from '@spreadsheet-moment/core';
 
-### Financial Trading
-```
-┌──────────────┬─────────────────┬─────────────────┐
-│ Market Feed  │ Strategy Agent  │ Risk Manager    │
-├──────────────┼─────────────────┼─────────────────┤
-│ HTTP WebSocket│ Neural Network  │ Portfolio Opt   │
-│ → Real-time   │ → Predict       │ → Balance       │
-└──────────────┴─────────────────┴─────────────────┘
+const cell = SuperInstance.create({
+  type: 'sensor',
+  connections: ['arduino://A0', 'https://api.weather.com']
+});
+
+cell.on('update', (data) => console.log(data));
 ```
 
 ---
 
-## 📚 Documentation
+## What You Can Build
 
-- [Getting Started Guide](docs/GETTING_STARTED.md)
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [Cell Agent API](docs/CELL_AGENT_API.md)
-- [I/O Connections](docs/IO_CONNECTIONS.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
+**Smart Manufacturing** — Sensors → Analysis → Motor control
+**Financial Trading** — Market data → Strategy → Execution
+**Home Automation** — Weather → Thermostat → Optimization
 
 ---
 
-## 🔬 Technology
+## Documentation
 
-Powered by cutting-edge research from the SuperInstance project:
-
-- **SE(3)-Equivariant Consensus** - Rotation-invariant coordination
-- **Tensor-Train Compression** - 100x bandwidth reduction
-- **Evolutionary Meta-Learning** - Self-optimizing agents
-- **Fractional Differential Equations** - Long-memory systems
-
-See [papers/](papers/) for complete research publications.
+- [Getting Started](https://spreadsheet-moment.pages.dev/docs.html)
+- [Architecture](docs/ARCHITECTURE.md)
+- [API Reference](docs/API_DOCUMENTATION.md)
+- [Deployment](docs/deployment/)
 
 ---
 
-## 📄 License
+## Research
 
-MIT License - see [LICENSE](LICENSE) for details.
+Built on peer-reviewed research from the SuperInstance project:
+
+| Paper | Venue | Contribution |
+|-------|-------|--------------|
+| P01-P10 | Foundations | Core architecture |
+| P11-P20 | NeurIPS 2024 | SE(3) consensus |
+| P21-P30 | ICML 2024 | Meta-learning |
+| P51-P60 | - | Hardware integration |
+| P61-P65 | - | Ancient cell applications |
+
+**[Complete Research →](https://github.com/SuperInstance/SuperInstance-papers)**
 
 ---
 
-**From ancient cells to living spreadsheets — the next evolution of data.**
+## License
 
-*Powered by SuperInstance — Distributed intelligence for everyone.*
+MIT — see [LICENSE](LICENSE)
+
+---
+
+**Website:** https://spreadsheet-moment.pages.dev
+**GitHub:** https://github.com/SuperInstance/spreadsheet-moment
+**Research:** https://github.com/SuperInstance/SuperInstance-papers
