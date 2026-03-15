@@ -9,7 +9,7 @@ module.exports = {
   testEnvironment: 'jsdom',
 
   // Root directory for tests
-  roots: ['<rootDir>/tests/unit', '<rootDir>/src'],
+  roots: ['<rootDir>/tests/unit', '<rootDir>/src', '<rootDir>/packages'],
 
   // Test file patterns
   testMatch: [
@@ -42,6 +42,12 @@ module.exports = {
     '^@api/(.*)$': '<rootDir>/src/api/$1',
     '^@tests/(.*)$': '<rootDir>/tests/$1',
 
+    // Monorepo package aliases
+    '^@spreadsheet-moment/agent-core$': '<rootDir>/packages/agent-core/src',
+    '^@spreadsheet-moment/agent-ui$': '<rootDir>/packages/agent-ui/src',
+    '^@spreadsheet-moment/agent-ai$': '<rootDir>/packages/agent-ai/src',
+    '^@spreadsheet-moment/agent-formulas$': '<rootDir>/packages/agent-formulas/src',
+
     // CSS and asset imports
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '\\.(jpg|jpeg|png|gif|svg|ico)$': '<rootDir>/tests/__mocks__/fileMock.js',
@@ -56,11 +62,15 @@ module.exports = {
   // Coverage configuration
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
+    'packages/*/src/**/*.{ts,tsx}',
     '!src/**/*.d.ts',
     '!src/**/*.stories.{js,jsx,ts,tsx}',
     '!src/**/__tests__/**',
     '!src/main.jsx',
-    '!src/vite-env.d.ts'
+    '!src/vite-env.d.ts',
+    '!packages/*/src/**/*.test.ts',
+    '!packages/*/src/**/*.spec.ts',
+    '!packages/*/src/index.ts'
   ],
 
   coverageThreshold: {
