@@ -1,0 +1,52 @@
+name = "spreadsheet-moment"
+compatibility_date = "2026-03-14"
+
+[site]
+bucket = "./website/dist"
+
+[[routes]]
+pattern = "superinstance.ai/spreadsheet-moment"
+zone_name = "superinstance.ai"
+
+[env.production]
+name = "spreadsheet-moment-prod"
+routes = [
+  { pattern = "superinstance.ai/spreadsheet-moment", zone_name = "superinstance.ai" }
+]
+
+[env.staging]
+name = "spreadsheet-moment-staging"
+routes = [
+  { pattern = "staging.superinstance.ai", zone_name = "superinstance.ai" }
+]
+
+# Build configuration
+[build]
+command = "cd website && npm install && npm run build"
+
+# Environment variables (use wrangler secret for sensitive data)
+[vars]
+ENVIRONMENT = "production"
+API_URL = "https://api.superinstance.ai"
+
+# KV Namespaces
+[[kv_namespaces]]
+binding = "CELL_STATE"
+id = "cell_state"
+preview_id = "cell_state_preview"
+
+# Durable Objects
+[[durable_objects.bindings]]
+name = "CELL_AGENT"
+class_name = "CellAgent"
+
+# R2 Buckets
+[[r2_buckets]]
+binding = "SPREADSHEETS"
+bucket_name = "spreadsheet-moment-sheets"
+
+# Queue Consumers
+[[queues.consumers]]
+queue = "cell-updates"
+max_batch_size = 10
+max_wait_time_ms = 100

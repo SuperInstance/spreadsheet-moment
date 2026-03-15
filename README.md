@@ -1,114 +1,125 @@
-# SpreadsheetMoment
+# Spreadsheet Moment - SuperInstance.ai
 
-**Visual documentation for the SuperInstance AI spreadsheet system**
+**Revolutionary spreadsheet technology where every cell is a SuperInstance agent.**
 
----
-
-## Overview
-
-SpreadsheetMoment is a visualization project that makes complex AI concepts accessible through visual documentation. We create clear, compelling visual explanations of how the SuperInstance AI spreadsheet system works, targeting audiences from engineers to 5th graders.
-
-## Project Mission
-
-> "To democratize understanding of AI systems through visualization, making complex concepts accessible to everyone regardless of technical background."
-
-### The "Moment"
-
-The name "SpreadsheetMoment" captures that instant of clarity when someone understands how the AI system works - when the abstract becomes concrete, when complexity becomes comprehension, when the "black box" becomes transparent.
-
-## What We Do
-
-We create visual documentation in three formats:
-
-### 1. Technical Documentation (Senior Engineers)
-- Deep-dive technical specifications
-- Architecture diagrams
-- Algorithm visualizations
-- Performance analysis charts
-- API documentation with visual flows
-
-### 2. General Audience (Laypeople)
-- Conceptual overviews
-- Metaphor-based explanations
-- System workflow diagrams
-- Use case illustrations
-- Benefit comparisons
-
-### 3. Educational Content (5th Grade Level)
-- Simplified concepts with analogies
-- Illustrated stories
-- Interactive examples
-- Step-by-step visual guides
-- Fun characters and mascots
-
-## Content Deliverables
-
-### Primary Documents
-- **2 x 12-page visual documents** covering:
-  - Document 1: System Overview & Architecture
-  - Document 2: AI Workflow & Decision Making
-
-### Slide Presentation
-- **Comprehensive slide deck** synthesizing both documents
-- Speaker notes for three audience levels
-- Export-ready for multiple formats (PDF, PPTX, web)
-
-### Image Library
-- **3 versions of each diagram** (technical, general, educational)
-- **3 iterations per version** (refined based on feedback)
-- High-resolution exports for print and web
-- Source files for future modifications
-
-### Translations
-- Priority languages: Spanish, Mandarin, Arabic, Hindi
-- Culturally adapted imagery and metaphors
-- Localized examples and use cases
-
-## Repository Structure
-
-```
-spreadsheet-moment/
-├── docs/
-│   ├── technical/          # Senior engineer documentation
-│   ├── general/            # General audience documentation
-│   ├── educational/        # 5th grade level content
-│   ├── assets/
-│   │   ├── images/         # Generated images (3 versions each)
-│   │   └── iterations/     # All iteration saves
-│   ├── scripts/            # Generation scripts
-│   └── translations/       # Multilingual versions
-├── simulations/            # Simulation data and results
-├── PROJECT_PLAN.md         # Detailed project plan
-├── README.md               # This file
-└── .gitignore              # Ignore large assets
-```
-
-## Project Status
-
-**Current Phase**: Repository Setup and Planning
-- [x] Repository created
-- [x] Folder structure established
-- [x] Project plan drafted
-- [ ] Image generation pipeline set up
-- [ ] First iteration of technical diagrams
-- [ ] First iteration of general audience docs
-- [ ] First iteration of educational content
-- [ ] Translation pipeline established
-
-## Contributing
-
-This project is part of the SuperInstance AI research ecosystem. For contribution guidelines, please see the main [SuperInstance](https://github.com/SuperInstance/SuperInstance-papers) repository.
-
-## License
-
-Proprietary - All rights reserved
-
-## Contact
-
-For questions about this project, please open an issue in the repository.
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-orange.svg)](https://workers.cloudflare.com/)
+[![Docker](https://img.shields.io/badge/Docker-Supported-blue.svg)](https://www.docker.com/)
 
 ---
 
-**Project Start Date**: 2026-03-14
-**Last Updated**: 2026-03-14
-**Status**: Active Development
+## 🚀 What is Spreadsheet Moment?
+
+Spreadsheet Moment transforms spreadsheet cells into intelligent agents powered by SuperInstance technology. Each cell becomes a living entity capable of:
+
+- **Autonomous reasoning** and decision-making
+- **Inter-cell communication** and coordination
+- **External I/O connections** (Arduino, ESP32, HTTP, serial ports)
+- **Real-time monitoring** and response
+- **Natural language interaction** via Cocapn/Capitaine frontends
+
+### Core Concept
+
+```
+Traditional Spreadsheet:
+┌───────┬───────┬───────┐
+│   1   │   2   │   3   │  ← Static values
+│ =SUM  │ =A*B │  =C$2 │  ← Static formulas
+└───────┴───────┴───────┘
+
+Spreadsheet Moment:
+┌───────┬───────┬───────┐
+│ 🤖 AI │ 🔌 I/O│ 📊    │  ← Living agents
+│ Agent │ Agent │ Agent │  ← Autonomous cells
+└───────┴───────┴───────┘
+   ↓       ↓       ↓
+External connections, real-time data, intelligent decisions
+```
+
+---
+
+## ✨ Key Features
+
+### 🤖 Agent-Based Cells
+Every cell contains an AI agent that can:
+- Reason about data and context
+- Make autonomous decisions
+- Communicate with other cells
+- Learn and adapt over time
+
+### 🔌 Universal I/O
+Connect cells to anything:
+- **Hardware:** Arduino, ESP32, serial ports, GPIO
+- **Network:** HTTP endpoints, WebSocket streams, APIs
+- **Files:** CSV, JSON, XML, binary feeds
+- **Services:** Databases, message queues, cloud services
+
+### 🌐 Multi-Frontend Support
+- **Cocapn.ai** - Playful pirate-themed interface
+- **Capitaine.ai** - Professional maritime-themed interface
+- **API** - Direct programmatic access
+
+### ⚡ Deployment Options
+1. **Cloudflare Workers** - Spin up on demand, zero idle cost
+2. **Docker container** - Self-hosted anywhere
+3. **Local server** - Run on your own machine
+4. **Browser extension** - Integration with existing spreadsheets
+
+---
+
+## 🎯 Use Cases
+
+### Smart Manufacturing
+```
+┌────────────────────┬─────────────────┬─────────────────┐
+│ Temperature Sensor │ Motor Control   │ Quality Check    │
+├────────────────────┼─────────────────┼─────────────────┤
+│ Arduino Pin A0     │ ESP32 PWM Out   │ NLP Analysis     │
+│ → Read real-time   │ → Adjust RPM    │ → Detect flaws   │
+└────────────────────┴─────────────────┴─────────────────┘
+```
+
+### Financial Trading
+```
+┌──────────────┬─────────────────┬─────────────────┐
+│ Market Feed  │ Strategy Agent  │ Risk Manager    │
+├──────────────┼─────────────────┼─────────────────┤
+│ HTTP WebSocket│ Neural Network  │ Portfolio Opt   │
+│ → Real-time   │ → Predict       │ → Balance       │
+└──────────────┴─────────────────┴─────────────────┘
+```
+
+---
+
+## 📚 Documentation
+
+- [Getting Started Guide](docs/GETTING_STARTED.md)
+- [Architecture Overview](docs/ARCHITECTURE.md)
+- [Cell Agent API](docs/CELL_AGENT_API.md)
+- [I/O Connections](docs/IO_CONNECTIONS.md)
+- [Deployment Guide](docs/DEPLOYMENT.md)
+
+---
+
+## 🔬 Technology
+
+Powered by cutting-edge research from the SuperInstance project:
+
+- **SE(3)-Equivariant Consensus** - Rotation-invariant coordination
+- **Tensor-Train Compression** - 100x bandwidth reduction
+- **Evolutionary Meta-Learning** - Self-optimizing agents
+- **Fractional Differential Equations** - Long-memory systems
+
+See [papers/](papers/) for complete research publications.
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+---
+
+**From ancient cells to living spreadsheets — the next evolution of data.**
+
+*Powered by SuperInstance — Distributed intelligence for everyone.*
