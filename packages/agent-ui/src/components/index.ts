@@ -12,3 +12,5 @@ export { default as HITLButtons } from './HITLButtons';
 
 export { AgentCellRenderer } from './AgentCellRenderer';
 export { default as AgentCellRenderer } from './AgentCellRenderer';
+export { ClawStatus } from './ClawStatus';
+export { default as ClawStatus } from './ClawStatus';
