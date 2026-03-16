@@ -530,7 +530,57 @@ export class AgentHandshakeProtocol {
 }
 
 // ============================================================================
-// EXPORTS
+// PLUGIN AND SERVICE EXPORTS
+// ============================================================================
+
+// Export plugin and service tokens
+export {
+  AgentCorePlugin,
+  createAgentCorePlugin,
+  ITraceProtocol,
+  IStateManager,
+  IAgentHandshakeProtocol,
+} from './plugins/AgentCorePlugin';
+
+export type {
+  IAgentCorePluginConfig,
+} from './plugins/AgentCorePlugin';
+
+export {
+  AgentCellService,
+} from './services/AgentCellService';
+
+export type {
+  ICreateAgentCellOptions,
+} from './services/AgentCellService';
+
+// ============================================================================
+// UTILITIES EXPORTS
+// ============================================================================
+
+export {
+  isAgentCell,
+  isAgentCellType,
+  isAgentCellState,
+  validateAgentCell,
+  validateAgentConfig,
+  getAgentCellTypeName,
+  getAgentCellStateName,
+  isAgentCellActive,
+  canActivateAgentCell,
+  getAgentCellStateColor,
+} from './utils/validators';
+
+export {
+  ValidationError,
+} from './utils/validators';
+
+export type {
+  ValidationResult,
+} from './utils/validators';
+
+// ============================================================================
+// DEFAULT EXPORT
 // ============================================================================
 
 export default {
@@ -540,5 +590,20 @@ export default {
   IAgentConfig,
   TraceProtocol,
   StateManager,
-  AgentHandshakeProtocol
+  AgentHandshakeProtocol,
+  AgentCorePlugin,
+  AgentCellService,
+  ValidationError,
+  validators: {
+    isAgentCell,
+    isAgentCellType,
+    isAgentCellState,
+    validateAgentCell,
+    validateAgentConfig,
+    getAgentCellTypeName,
+    getAgentCellStateName,
+    isAgentCellActive,
+    canActivateAgentCell,
+    getAgentCellStateColor,
+  }
 };
