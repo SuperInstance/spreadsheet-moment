@@ -16,15 +16,15 @@ import {
   MetricsCollector,
   MetricCategory,
   MetricType
-} from '../MetricsCollector';
+} from '../../MetricsCollector';
 import {
   HealthChecker,
   HealthStatus,
   ResourceThresholds
-} from '../HealthChecker';
+} from '../../HealthChecker';
 import {
   MonitoringMiddleware
-} from '../../middleware/monitoringMiddleware';
+} from '../../../middleware/monitoringMiddleware';
 
 describe('Monitoring Performance Validation', () => {
   describe('Metrics Collection Performance', () => {

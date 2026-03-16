@@ -19,8 +19,8 @@ import {
   HTTPHealthCheckConfig,
   WebSocketHealthCheckConfig,
   ResourceThresholds
-} from '../HealthChecker';
-import { MetricsCollector } from '../MetricsCollector';
+} from '../../HealthChecker';
+import { MetricsCollector } from '../../MetricsCollector';
 
 describe('Health Checks Integration Tests', () => {
   let checker: HealthChecker;

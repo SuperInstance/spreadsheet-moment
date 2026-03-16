@@ -140,7 +140,7 @@ describe('Claw API Contract - createClaw', () => {
         model: {
           provider: ModelProvider.ANTHROPIC,
           model: 'claude-3-opus-20240229',
-          apiKey: 'sk-ant-test'
+          apiKey: 'sk-ant-test-1234567890'
         },
         seed: {
           purpose: 'Analyze complex data patterns',
@@ -198,7 +198,7 @@ describe('Claw API Contract - createClaw', () => {
     it('should create reasoning claw with equipment', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-ant-test'
+        apiKey: 'sk-ant-test-1234567890'
       });
 
       const result = await client.createClaw(request);
@@ -221,7 +221,7 @@ describe('Claw API Contract - createClaw', () => {
         model: {
           provider: ModelProvider.DEEPSEEK,
           model: 'deepseek-chat',
-          apiKey: 'sk-test'
+          apiKey: 'sk-test-1234567890123'
         },
         seed: {
           purpose: 'Test',
@@ -267,7 +267,7 @@ describe('Claw API Contract - createClaw', () => {
     it('should reject invalid claw type', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       await expect(client.createClaw(request)).rejects.toThrow('VALIDATION_ERROR');
@@ -286,7 +286,7 @@ describe('Claw API Contract - createClaw', () => {
         model: {
           provider: ModelProvider.DEEPSEEK,
           model: 'deepseek-chat',
-          apiKey: 'sk-test'
+          apiKey: 'sk-test-1234567890123'
         },
         seed: {
           purpose: 'Test',
@@ -328,7 +328,7 @@ describe('Claw API Contract - createClaw', () => {
     it('should reject duplicate claw ID', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       await expect(client.createClaw(request)).rejects.toThrow('CONFLICT');
@@ -359,7 +359,7 @@ describe('Claw API Contract - queryClaw', () => {
         model: {
           provider: ModelProvider.DEEPSEEK,
           model: 'deepseek-chat',
-          apiKey: 'sk-test'
+          apiKey: 'sk-test-1234567890123'
         },
         seed: {
           purpose: 'Monitor temperature',
@@ -408,7 +408,7 @@ describe('Claw API Contract - queryClaw', () => {
     it('should return claw state', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       const result = await client.queryClaw(request);
@@ -452,7 +452,7 @@ describe('Claw API Contract - queryClaw', () => {
     it('should return 404 for non-existent claw', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       await expect(client.queryClaw(request)).rejects.toThrow('NOT_FOUND');
@@ -504,7 +504,7 @@ describe('Claw API Contract - triggerClaw', () => {
     it('should trigger claw and return execution ID', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       const result = await client.triggerClaw(request);
@@ -550,7 +550,7 @@ describe('Claw API Contract - triggerClaw', () => {
     it('should reject trigger for already running claw', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       await expect(client.triggerClaw(request)).rejects.toThrow('INVALID_STATE');
@@ -598,7 +598,7 @@ describe('Claw API Contract - cancelClaw', () => {
     it('should cancel running claw', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       const result = await client.cancelClaw(request);
@@ -644,7 +644,7 @@ describe('Claw API Contract - cancelClaw', () => {
     it('should reject cancel for dormant claw', async () => {
       const client = new ClawClient({
         baseUrl: 'http://localhost:1234',
-        apiKey: 'sk-test'
+        apiKey: 'sk-test-1234567890123'
       });
 
       await expect(client.cancelClaw(request)).rejects.toThrow('INVALID_STATE');

@@ -111,7 +111,7 @@ const createMockClawConfig = (): ClawCellConfig => ({
   model: {
     provider: ModelProvider.DEEPSEEK,
     model: 'deepseek-chat',
-    apiKey: 'test-model-key'
+    apiKey: 'test-model-key-12345678'
   },
   seed: {
     purpose: 'Test sensor claw',
@@ -890,7 +890,7 @@ describe('ClawClient Integration Tests', () => {
       expect(() => {
         new ClawClient({
           baseUrl: BASE_URL,
-          apiKey: 'short-key'
+          apiKey: 'short-key-123456789012'
         });
       }).toThrow('API key must be at least 20 characters long');
     });

@@ -142,7 +142,7 @@ const createMockClawConfig = (id?: string): ClawCellConfig => ({
   model: {
     provider: ModelProvider.DEEPSEEK,
     model: 'deepseek-chat',
-    apiKey: 'test-model-key'
+    apiKey: 'test-model-key-12345678'
   },
   seed: {
     purpose: 'Performance test claw',

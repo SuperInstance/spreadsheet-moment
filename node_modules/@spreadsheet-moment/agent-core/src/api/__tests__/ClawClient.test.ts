@@ -29,7 +29,7 @@ describe('ClawClient', () => {
   const mockConfig = {
     baseUrl: 'https://api.test.com',
     wsUrl: 'wss://api.test.com/ws',
-    apiKey: 'test-api-key',
+    apiKey: 'test-api-key-12345678', // 20+ characters for validation
     timeout: 5000,
     maxRetries: 2,
     enableWebSocket: false,
@@ -69,7 +69,7 @@ describe('ClawClient', () => {
       model: {
         provider: ModelProvider.DEEPSEEK,
         model: 'deepseek-chat',
-        apiKey: 'test-key'
+        apiKey: 'test-model-api-key-12345' // 20+ characters for validation
       },
       seed: {
         purpose: 'Test claw',
