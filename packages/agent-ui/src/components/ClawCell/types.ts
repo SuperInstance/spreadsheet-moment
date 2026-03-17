@@ -4,7 +4,16 @@
  * Type definitions for Claw cell components
  */
 
-import { ClawState, ModelProvider, EquipmentSlot } from '@spreadsheet-moment/agent-core';
+import {
+  ClawState,
+  ModelProvider,
+  EquipmentSlot,
+  TriggerType,
+  LearningStrategy
+} from '@spreadsheet-moment/agent-core';
+
+// Re-export for convenience
+export { ClawState, ModelProvider, EquipmentSlot, TriggerType, LearningStrategy };
 
 /**
  * Claw cell configuration
@@ -213,4 +222,120 @@ export interface ModelProviderInfo {
   description: string;
   models: string[];
   icon: string;
+}
+
+/**
+ * Claw cell config component props
+ */
+export interface ClawCellConfigProps {
+  /** Current configuration */
+  config?: ClawCellConfiguration;
+
+  /** On configuration change */
+  onConfigChange: (config: ClawCellConfiguration) => void;
+
+  /** On save */
+  onSave: () => void;
+
+  /** On cancel */
+  onCancel: () => void;
+
+  /** Read-only mode */
+  readOnly?: boolean;
+
+  /** Show advanced options */
+  showAdvanced?: boolean;
+
+  /** Custom class name */
+  className?: string;
+}
+
+/**
+ * Claw agent status for management UI
+ */
+export interface ClawAgentStatus {
+  /** Claw ID */
+  id: string;
+
+  /** Cell location */
+  cellLocation: string;
+
+  /** Agent name */
+  name: string;
+
+  /** Current state */
+  state: ClawState;
+
+  /** Current configuration */
+  config: ClawCellConfiguration;
+
+  /** Runtime state */
+  runtimeState?: ClawCellState;
+
+  /** Last activity timestamp */
+  lastActivity: number;
+
+  /** Whether agent is connected */
+  isConnected: boolean;
+}
+
+/**
+ * Claw management panel props
+ */
+export interface ClawManagementPanelProps {
+  /** All claw agents */
+  agents: ClawAgentStatus[];
+
+  /** Selected agent ID */
+  selectedId?: string;
+
+  /** On agent select */
+  onSelect?: (agentId: string) => void;
+
+  /** On agent create */
+  onCreate?: () => void;
+
+  /** On agent edit */
+  onEdit?: (agentId: string) => void;
+
+  /** On agent delete */
+  onDelete?: (agentId: string) => void;
+
+  /** On agent trigger */
+  onTrigger?: (agentId: string) => void;
+
+  /** Show filters */
+  showFilters?: boolean;
+
+  /** Custom class name */
+  className?: string;
+}
+
+/**
+ * Real-time claw update event
+ */
+export interface ClawUpdateEvent {
+  /** Claw ID */
+  clawId: string;
+
+  /** Cell location */
+  cellLocation: string;
+
+  /** Update type */
+  type: 'state_change' | 'reasoning' | 'action' | 'error';
+
+  /** New state (if state change) */
+  newState?: ClawState;
+
+  /** Reasoning step (if reasoning) */
+  reasoning?: string;
+
+  /** Action taken (if action) */
+  action?: string;
+
+  /** Error message (if error) */
+  error?: string;
+
+  /** Timestamp */
+  timestamp: number;
 }

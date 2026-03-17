@@ -18,7 +18,30 @@ export { default as ClawCellRenderer } from './ClawCellRenderer';
 export { ClawCellStatusBar } from './ClawCellStatusBar';
 export { default as ClawCellStatusBar } from './ClawCellStatusBar';
 
-export type { ClawCellConfigProps } from './ClawCellConfig';
-export type { ClawCellEditorProps } from './ClawCellEditor';
-export type { ClawCellRendererProps } from './ClawCellRenderer';
-export type { ClawCellStatusBarProps } from './ClawCellStatusBar';
+export { ClawManagementPanel, ClawAgentManager } from './ClawAgentManager';
+export { default as ClawAgentManager } from './ClawAgentManager';
+
+// Type exports
+export type {
+  ClawCellConfiguration,
+  ClawCellState,
+  ClawCellEditorProps,
+  ClawCellRendererProps,
+  ClawCellStatusBarProps,
+  ClawCellConfigProps,
+  EquipmentSlotInfo,
+  ModelProviderInfo,
+  ClawAgentStatus,
+  ClawManagementPanelProps,
+  ClawUpdateEvent,
+  ClawAgentManagerProps
+} from './types';
+
+// Re-export enums from agent-core for convenience
+export {
+  ClawState,
+  ModelProvider,
+  EquipmentSlot,
+  TriggerType,
+  LearningStrategy
+} from './types';

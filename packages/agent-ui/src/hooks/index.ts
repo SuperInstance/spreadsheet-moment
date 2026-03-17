@@ -9,3 +9,10 @@ export {
   useAgentCells,
   useAgentApproval
 } from './useAgentCell';
+
+export {
+  useClawRealtime,
+  type UseClawRealtimeConfig,
+  type UseClawRealtimeReturn,
+  type ConnectionStatus
+} from './useClawRealtime';

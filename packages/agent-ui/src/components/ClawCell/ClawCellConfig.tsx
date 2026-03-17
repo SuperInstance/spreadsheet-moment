@@ -36,34 +36,34 @@ const EQUIPMENT_SLOTS: EquipmentSlotInfo[] = [
     required: true
   },
   {
-    slot: EquipmentSlot.CONSENSUS,
-    name: 'Consensus',
-    description: 'Multi-claw agreement mechanisms',
-    icon: '🤝',
-    category: 'coordination',
-    required: false
-  },
-  {
-    slot: EquipmentSlot.SPREADSHEET,
-    name: 'Spreadsheet',
-    description: 'Direct cell integration and manipulation',
-    icon: '📊',
-    category: 'integration',
-    required: true
-  },
-  {
-    slot: EquipmentSlot.DISTILLATION,
-    name: 'Distillation',
-    description: 'Model compression and optimization',
-    icon: '🎯',
+    slot: EquipmentSlot.LEARNING,
+    name: 'Learning',
+    description: 'Adaptive learning and improvement',
+    icon: '📚',
     category: 'reasoning',
     required: false
   },
   {
-    slot: EquipmentSlot.COORDINATION,
-    name: 'Coordination',
-    description: 'Multi-claw orchestration and swarm behavior',
-    icon: '🎮',
+    slot: EquipmentSlot.PERCEPTION,
+    name: 'Perception',
+    description: 'Data sensing and interpretation',
+    icon: '👁️',
+    category: 'integration',
+    required: false
+  },
+  {
+    slot: EquipmentSlot.ACTION,
+    name: 'Action',
+    description: 'Execute actions and modify cells',
+    icon: '⚡',
+    category: 'reasoning',
+    required: true
+  },
+  {
+    slot: EquipmentSlot.COMMUNICATION,
+    name: 'Communication',
+    description: 'Multi-agent coordination and messaging',
+    icon: '💬',
     category: 'coordination',
     required: false
   }
@@ -115,7 +115,7 @@ const DEFAULT_CONFIG: ClawCellConfiguration = {
   trigger: {
     type: 'manual'
   },
-  equipment: [EquipmentSlot.MEMORY, EquipmentSlot.REASONING, EquipmentSlot.SPREADSHEET],
+  equipment: [EquipmentSlot.MEMORY, EquipmentSlot.REASONING, EquipmentSlot.ACTION],
   learningStrategy: {
     type: 'reinforcement',
     iterations: 1000,
