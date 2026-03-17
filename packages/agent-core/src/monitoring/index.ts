@@ -42,6 +42,3 @@ export type {
   SummaryMetric
 } from './MetricsCollector';
 
-// Default exports
-export { default as MetricsCollector } from './MetricsCollector';
-export { default as HealthChecker } from './HealthChecker';

@@ -229,7 +229,7 @@ export interface WebSocketMessage {
   type: WebSocketMessageType;
   traceId: string;
   timestamp: number;
-  payload: any;
+  payload?: any;
 }
 
 /**

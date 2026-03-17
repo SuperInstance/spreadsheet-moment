@@ -19,4 +19,3 @@ export type {
   MonitoringMiddlewareConfig
 } from './monitoringMiddleware';
 
-export { default as MonitoringMiddleware } from './monitoringMiddleware';
