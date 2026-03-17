@@ -108,8 +108,8 @@ export const Tutorial: React.FC<{
           onPrevious={handlePrevious}
           onSkip={handleSkip}
           onComplete={completeTutorial}
-          canGoBack={tutorial.allowBack && state.currentStep > 0}
-          canSkip={tutorial.skippable}
+          canGoBack={(tutorial.allowBack ?? false) && state.currentStep > 0}
+          canSkip={tutorial.skippable ?? false}
           isPaused={state.isPaused}
           onPause={pauseTutorial}
           onResume={resumeTutorial}

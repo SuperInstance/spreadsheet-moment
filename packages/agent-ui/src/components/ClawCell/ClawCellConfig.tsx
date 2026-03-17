@@ -167,11 +167,12 @@ export const ClawCellConfig: React.FC<ClawCellConfigProps> = ({
   const updateNestedField = <T extends keyof ClawCellConfiguration>(
     field: T,
     subField: string,
-    value: any
+    value: unknown
   ) => {
+    const fieldData = config[field] as Record<string, unknown> | undefined;
     const updated = {
       ...config,
-      [field]: { ...config[field], [subField]: value }
+      [field]: { ...(fieldData || {}), [subField]: value }
     };
     setConfig(updated);
     onConfigChange(updated);

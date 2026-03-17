@@ -185,10 +185,10 @@ export const ReasoningPanel: React.FC<ReasoningPanelProps> = ({
         <ReactMarkdown
           className="reasoning-content"
           components={{
-            p: ({ children }) => (
+            p: ({ children }: { children?: React.ReactNode }) => (
               <p style={{ margin: '4px 0' }}>{children}</p>
             ),
-            code: ({ inline, children }) => (
+            code: ({ inline, children }: { inline?: boolean; children?: React.ReactNode }) => (
               inline ? (
                 <code style={{
                   backgroundColor: 'rgba(0, 0, 0, 0.05)',

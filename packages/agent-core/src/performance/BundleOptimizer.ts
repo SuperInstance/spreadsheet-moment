@@ -140,15 +140,20 @@ export function createBundleRouter(routes: Record<string, () => Promise<any>>) {
     /**
      * Preload a route
      */
-    preloadRoute: async (path: string): Promise<void> => {
-      await this.getRouteLoader(path)();
+    preloadRoute: async function(path: string): Promise<void> {
+      const loader = routes[path];
+      if (loader && !loadedRoutes.has(path)) {
+        await loader();
+        loadedRoutes.add(path);
+      }
     },
 
     /**
      * Preload multiple routes
      */
-    preloadRoutes: async (paths: string[]): Promise<void> => {
-      await Promise.all(paths.map(path => this.preloadRoute(path)));
+    preloadRoutes: async function(paths: string[]): Promise<void> {
+      const self = this;
+      await Promise.all(paths.map(path => self.preloadRoute(path)));
     },
 
     /**

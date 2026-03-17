@@ -8,18 +8,8 @@
  */
 
 export { TemplateGallery } from './TemplateGallery';
-export { default as TemplateGallery } from './TemplateGallery';
-
 export { TemplateCard } from './TemplateCard';
-export { default as TemplateCard } from './TemplateCard';
-
 export { TemplatePreview } from './TemplatePreview';
-export { default as TemplatePreview } from './TemplatePreview';
-
 export { TemplateEditor } from './TemplateEditor';
-export { default as TemplateEditor } from './TemplateEditor';
 
-export type { Template } from './types';
-export type { TemplateCategory } from './types';
-export type { TemplateMetadata } from './types';
-export type { TemplateCell } from './types';
+export type { Template, TemplateCategory, TemplateMetadata, TemplateCell } from './types';

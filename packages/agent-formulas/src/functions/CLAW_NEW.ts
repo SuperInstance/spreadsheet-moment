@@ -18,14 +18,12 @@
  * @version 3.0.0 - Phase 3: Enhanced singleton management with disposal
  */
 
-import { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
+import { FunctionType, type Nullable, type InterpreterValue, EquipmentSlot } from '../types';
 import { v4 as uuidv4 } from 'uuid';
 import ClawClientManager from '../utils/ClawClientManager';
 import type {
   ClawAgentType,
   ModelProvider,
-  EquipmentSlot,
   ClawCellConfig,
   TriggerCondition
 } from '../types';
@@ -203,7 +201,7 @@ export const CLAW_NEW = {
         try {
           // Call API to create claw
           const response = await client.createClaw({
-            config,
+            config: config as unknown as import('@spreadsheet-moment/agent-core').ClawCellConfig,
             context: {
               sheetId: context.sheetId || 'default',
               userId: context.userId,

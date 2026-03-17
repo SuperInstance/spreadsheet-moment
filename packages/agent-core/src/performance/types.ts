@@ -128,7 +128,7 @@ export interface OptimizationRecommendation {
   priority: 'low' | 'medium' | 'high';
 
   /** Recommendation type */
-  type: 'lazy-load' | 'code-split' | 'cache' | 'debounce' | 'throttle' | 'batch';
+  type: 'lazy-load' | 'code-split' | 'cache' | 'debounce' | 'throttle' | 'batch' | 'virtual-scroll';
 
   /** Recommendation description */
   description: string;

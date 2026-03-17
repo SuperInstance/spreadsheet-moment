@@ -4,8 +4,35 @@
  * @module agent-formulas/types
  */
 
-import type { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
+/**
+ * Nullable type
+ */
+export type Nullable<T> = T | null;
+
+/**
+ * Interpreter value type
+ */
+export type InterpreterValue = string | number | boolean | null | undefined | InterpreterArray | InterpreterObject;
+
+/**
+ * Interpreter array type
+ */
+export interface InterpreterArray extends Array<InterpreterValue> {}
+
+/**
+ * Interpreter object type
+ */
+export interface InterpreterObject {
+  [key: string]: InterpreterValue;
+}
+
+/**
+ * Function type enum
+ */
+export const FunctionType = {
+  Function: 'Function',
+  Array: 'Array',
+} as const;
 
 /**
  * Claw agent cell types
@@ -117,9 +144,9 @@ export interface Relationship {
 /**
  * Claw formula function signature
  */
-export interface ClawFunctionType extends FunctionType {
+export interface ClawFunctionType {
   id: number;
-  type: FunctionType.Function;
+  type: typeof FunctionType.Function;
   name: string;
   description: string;
   minParams: number;
@@ -134,7 +161,8 @@ export interface ClawFunctionType extends FunctionType {
     type: string;
     description: string;
   };
-  execute: (...args: any[]) => Promise<Nullable<InterpreterValue>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  execute: (this: any, ...args: any[]) => Promise<Nullable<InterpreterValue>>;
 }
 
 /**
@@ -142,7 +170,7 @@ export interface ClawFunctionType extends FunctionType {
  */
 export interface ClawApiResponse {
   success: boolean;
-  data?: any;
+  data?: unknown;
   error?: string;
   clawId?: string;
 }
@@ -153,6 +181,6 @@ export interface ClawApiResponse {
 export interface FormulaContext {
   sheetId: string;
   cellId: string;
-  workbook: any;
+  workbook: unknown;
   timestamp: number;
 }

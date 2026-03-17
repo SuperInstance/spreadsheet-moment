@@ -14,8 +14,7 @@
  * =CLAW_TRIGGER(A1, B2)
  */
 
-import { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
+import { FunctionType, type Nullable, type InterpreterValue } from '../types';
 import type { ClawFunctionType } from '../types';
 
 /**

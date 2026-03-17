@@ -13,8 +13,7 @@
  * =CLAW_EQUIP(A1, "SPREADSHEET")
  */
 
-import { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
+import { FunctionType, type Nullable, type InterpreterValue } from '../types';
 import type { ClawFunctionType, EquipmentSlot } from '../types';
 
 /**

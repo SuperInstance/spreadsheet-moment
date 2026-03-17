@@ -289,7 +289,8 @@ const STATE_TRANSITIONS: Record<AgentCellState, AgentCellState[]> = {
   [AgentCellState.THINKING]: [
     AgentCellState.NEEDS_REVIEW,
     AgentCellState.POSTED,
-    AgentCellState.ERROR
+    AgentCellState.ERROR,
+    AgentCellState.DORMANT  // Allow reset from THINKING
   ],
   [AgentCellState.NEEDS_REVIEW]: [
     AgentCellState.POSTED,

@@ -4,14 +4,16 @@
  * Utilities for lazy loading components and resources
  */
 
+import React from 'react';
+
 /**
  * Lazy load a component
  */
-export function lazyLoad<T>(
+export function lazyLoad<T extends { default: React.ComponentType<any> }>(
   loader: () => Promise<T>,
   fallback?: React.ComponentType
 ): React.LazyExoticComponent<React.ComponentType<any>> {
-  return React.lazy(() => loader());
+  return React.lazy(() => loader() as Promise<{ default: React.ComponentType<any> }>);
 }
 
 /**
@@ -126,8 +128,9 @@ export function createBundleLoader(bundles: Record<string, () => Promise<any>>) 
     /**
      * Preload multiple bundles
      */
-    preloadMultiple: async (names: string[]): Promise<void> => {
-      await Promise.all(names.map(name => this.load(name)));
+    preloadMultiple: async function(names: string[]): Promise<void> {
+      const self = this;
+      await Promise.all(names.map(name => self.load(name)));
     },
 
     /**

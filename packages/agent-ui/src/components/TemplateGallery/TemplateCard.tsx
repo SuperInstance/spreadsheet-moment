@@ -6,7 +6,6 @@
 
 import React from 'react';
 import { Template, TemplateCardProps, TemplateCategory } from './types';
-import { getCategoryInfo } from './utils';
 
 /**
  * Get category information

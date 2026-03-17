@@ -16,37 +16,42 @@
  * =CLAW_RELATE("claw_orchestrator", "claw_analyzer", "delegate")
  */
 
-import { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
-import type { ClawFunctionType, RelationshipType, CoordinationStrategy } from '../types';
+import { FunctionType, type Nullable, type InterpreterValue, RelationshipType, CoordinationStrategy } from '../types';
+import type { ClawFunctionType } from '../types';
 
 /**
  * Valid relationship types
  */
-const VALID_RELATIONSHIPS: RelationshipType[] = ['slave', 'coworker', 'peer', 'delegate', 'observer'];
+const VALID_RELATIONSHIPS: string[] = [
+  RelationshipType.SLAVE,
+  RelationshipType.COWORKER,
+  RelationshipType.PEER,
+  RelationshipType.DELEGATE,
+  RelationshipType.OBSERVER
+];
 
 /**
  * Valid coordination strategies
  */
-const VALID_STRATEGIES: CoordinationStrategy[] = [
-  'PARALLEL',
-  'SEQUENTIAL',
-  'CONSENSUS',
-  'MAJORITY_VOTE',
-  'WEIGHTED'
+const VALID_STRATEGIES: string[] = [
+  CoordinationStrategy.PARALLEL,
+  CoordinationStrategy.SEQUENTIAL,
+  CoordinationStrategy.CONSENSUS,
+  CoordinationStrategy.MAJORITY_VOTE,
+  CoordinationStrategy.WEIGHTED
 ];
 
 /**
  * Validate relationship type
  */
-function isValidRelationship(type: string): type is RelationshipType {
+function isValidRelationship(type: string): boolean {
   return VALID_RELATIONSHIPS.includes(type.toLowerCase() as RelationshipType);
 }
 
 /**
  * Validate coordination strategy
  */
-function isValidStrategy(strategy: string): strategy is CoordinationStrategy {
+function isValidStrategy(strategy: string): boolean {
   return VALID_STRATEGIES.includes(strategy.toUpperCase() as CoordinationStrategy);
 }
 
@@ -55,18 +60,18 @@ function isValidStrategy(strategy: string): strategy is CoordinationStrategy {
  */
 function getDefaultStrategy(relationshipType: RelationshipType): CoordinationStrategy {
   switch (relationshipType) {
-    case 'slave':
-      return 'PARALLEL';
-    case 'coworker':
-      return 'SEQUENTIAL';
-    case 'peer':
-      return 'CONSENSUS';
-    case 'delegate':
-      return 'SEQUENTIAL';
-    case 'observer':
-      return 'PARALLEL';
+    case RelationshipType.SLAVE:
+      return CoordinationStrategy.PARALLEL;
+    case RelationshipType.COWORKER:
+      return CoordinationStrategy.SEQUENTIAL;
+    case RelationshipType.PEER:
+      return CoordinationStrategy.CONSENSUS;
+    case RelationshipType.DELEGATE:
+      return CoordinationStrategy.SEQUENTIAL;
+    case RelationshipType.OBSERVER:
+      return CoordinationStrategy.PARALLEL;
     default:
-      return 'PARALLEL';
+      return CoordinationStrategy.PARALLEL;
   }
 }
 
@@ -114,7 +119,7 @@ export const CLAW_RELATE: ClawFunctionType = {
   },
 
   execute: async function (
-    this: any,
+    this: unknown,
     fromClawId: string,
     toClawId: string,
     relationshipType: string,
@@ -178,7 +183,7 @@ export const CLAW_RELATE: ClawFunctionType = {
             return true; // Success
           } else {
             const error = await response.json();
-            throw new Error(error.message || 'Failed to create relationship');
+            throw new Error((error as { message?: string }).message || 'Failed to create relationship');
           }
         } catch (error) {
           console.warn('CLAW_RELATE: Backend API unavailable:', error);

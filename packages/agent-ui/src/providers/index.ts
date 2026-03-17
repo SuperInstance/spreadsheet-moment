@@ -9,5 +9,3 @@ export {
   useAgentWebSocket,
   useWebSocketSubscription
 } from './AgentWebSocketProvider';
-
-export { default as AgentWebSocketProvider } from './AgentWebSocketProvider';

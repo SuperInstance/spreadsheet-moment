@@ -6,20 +6,43 @@
  * @module agent-formulas/plugins
  */
 
-import { Injectable, Autowired } from '@univerjs/core';
-import type { IFunctionService } from '@univerjs/engine-formula';
 import { CLAW_NEW } from '../functions/CLAW_NEW';
 import { CLAW_EQUIP } from '../functions/CLAW_EQUIP';
 import { CLAW_TRIGGER } from '../functions/CLAW_TRIGGER';
 import { CLAW_RELATE } from '../functions/CLAW_RELATE';
+import type { ClawFunctionType } from '../types';
 
 const PLUGIN_NAME = 'CLAW_FORMULA_PLUGIN';
 
-@Injectable()
+/**
+ * Function service interface (simplified for type safety)
+ */
+interface IFunctionService {
+  registerFunction(func: unknown): void;
+  unregisterFunction?(id: number): void;
+}
+
+/**
+ * Claw Formula Plugin
+ *
+ * Provides methods to register Claw formula functions
+ */
 export class ClawFormulaPlugin {
-  constructor(
-    @IFunctionService private readonly _functionService: IFunctionService
-  ) {}
+  private _functionService: IFunctionService | null = null;
+  private _registeredFunctions: number[] = [];
+
+  constructor(functionService?: IFunctionService) {
+    if (functionService) {
+      this._functionService = functionService;
+    }
+  }
+
+  /**
+   * Set the function service
+   */
+  setFunctionService(service: IFunctionService): void {
+    this._functionService = service;
+  }
 
   /**
    * Plugin initialization
@@ -32,19 +55,28 @@ export class ClawFormulaPlugin {
    * Register all Claw formula functions
    */
   private _registerFunctions(): void {
-    // Register CLAW_NEW
-    this._functionService.registerFunction(CLAW_NEW);
+    if (!this._functionService) {
+      console.warn(`[${PLUGIN_NAME}] Function service not available, skipping registration`);
+      return;
+    }
 
-    // Register CLAW_EQUIP
-    this._functionService.registerFunction(CLAW_EQUIP);
+    const functions: ClawFunctionType[] = [
+      CLAW_NEW as unknown as ClawFunctionType,
+      CLAW_EQUIP as unknown as ClawFunctionType,
+      CLAW_TRIGGER as unknown as ClawFunctionType,
+      CLAW_RELATE as unknown as ClawFunctionType,
+    ];
 
-    // Register CLAW_TRIGGER
-    this._functionService.registerFunction(CLAW_TRIGGER);
+    for (const func of functions) {
+      try {
+        this._functionService.registerFunction(func);
+        this._registeredFunctions.push(func.id);
+      } catch (error) {
+        console.error(`[${PLUGIN_NAME}] Failed to register function ${func.name}:`, error);
+      }
+    }
 
-    // Register CLAW_RELATE
-    this._functionService.registerFunction(CLAW_RELATE);
-
-    console.log(`[${PLUGIN_NAME}] Registered 4 Claw formula functions:`);
+    console.log(`[${PLUGIN_NAME}] Registered ${this._registeredFunctions.length} Claw formula functions:`);
     console.log(`  - CLAW_NEW (id: ${CLAW_NEW.id})`);
     console.log(`  - CLAW_EQUIP (id: ${CLAW_EQUIP.id})`);
     console.log(`  - CLAW_TRIGGER (id: ${CLAW_TRIGGER.id})`);
@@ -55,7 +87,17 @@ export class ClawFormulaPlugin {
    * Plugin cleanup
    */
   dispose(): void {
-    // Unregister functions if needed
+    // Unregister functions if the service supports it
+    if (this._functionService?.unregisterFunction) {
+      for (const id of this._registeredFunctions) {
+        try {
+          this._functionService.unregisterFunction(id);
+        } catch (error) {
+          console.error(`[${PLUGIN_NAME}] Failed to unregister function ${id}:`, error);
+        }
+      }
+    }
+    this._registeredFunctions = [];
     console.log(`[${PLUGIN_NAME}] Disposed`);
   }
 }

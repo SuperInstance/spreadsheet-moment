@@ -9,12 +9,6 @@
  * @packageDocumentation
  */
 
-import { Injectable, Inject } from '@univerjs/core';
-import {
-  ICellModel,
-  ICellData,
-} from '@univerjs/engine-render';
-
 import {
   IAgentCellData,
   AgentCellType,
@@ -26,6 +20,12 @@ import {
   IStateManager,
   IAgentHandshakeProtocol,
 } from '../plugins/AgentCorePlugin';
+
+// Type definitions for cell model
+interface ICellData {
+  v?: string | number;
+  f?: string;
+}
 
 /**
  * Agent Cell Creation Options
@@ -61,13 +61,21 @@ export interface ICreateAgentCellOptions {
  *
  * Provides methods to create, update, and manage agent cells
  */
-@Injectable()
 export class AgentCellService {
+  private _traceProtocol: TraceProtocolWrapper;
+  private _stateManager: StateManagerWrapper;
+  private _handshakeProtocol: HandshakeProtocolWrapper;
+
   constructor(
-    @Inject(ITraceProtocol) private readonly _traceProtocol: any,
-    @Inject(IStateManager) private readonly _stateManager: any,
-    @Inject(IAgentHandshakeProtocol) private readonly _handshakeProtocol: any
-  ) {}
+    traceProtocol?: unknown,
+    stateManager?: unknown,
+    handshakeProtocol?: unknown
+  ) {
+    // Create wrapper objects that provide the expected interface
+    this._traceProtocol = new TraceProtocolWrapper(traceProtocol);
+    this._stateManager = new StateManagerWrapper(stateManager);
+    this._handshakeProtocol = new HandshakeProtocolWrapper(handshakeProtocol);
+  }
 
   /**
    * Create a new agent cell
@@ -187,14 +195,14 @@ export class AgentCellService {
   /**
    * Check if cell value is from another agent
    */
-  isAgentGenerated(value: any): boolean {
+  isAgentGenerated(value: unknown): boolean {
     return this._handshakeProtocol.isAgentGenerated(value);
   }
 
   /**
    * Get agent confidence score for value
    */
-  getAgentConfidence(value: any): number {
+  getAgentConfidence(value: unknown): number {
     return this._handshakeProtocol.getAgentConfidence(value);
   }
 
@@ -241,6 +249,109 @@ export class AgentCellService {
     const timestamp = Date.now();
     const random = Math.random().toString(36).substring(2, 10);
     return `origin_${timestamp}_${random}`;
+  }
+}
+
+/**
+ * Wrapper class for Trace Protocol
+ */
+class TraceProtocolWrapper {
+  private _protocol: unknown;
+
+  constructor(protocol?: unknown) {
+    this._protocol = protocol;
+  }
+
+  generate(originId: string): string {
+    if (this._protocol && typeof (this._protocol as { generate: (id: string) => string }).generate === 'function') {
+      return (this._protocol as { generate: (id: string) => string }).generate(originId);
+    }
+    return `trace_${originId}_${Date.now()}`;
+  }
+
+  complete(traceId: string): void {
+    if (this._protocol && typeof (this._protocol as { complete: (id: string) => void }).complete === 'function') {
+      (this._protocol as { complete: (id: string) => void }).complete(traceId);
+    }
+  }
+}
+
+/**
+ * Wrapper class for State Manager
+ */
+class StateManagerWrapper {
+  private _manager: unknown;
+
+  constructor(manager?: unknown) {
+    this._manager = manager;
+  }
+
+  transition(cellData: IAgentCellData, state: AgentCellState): IAgentCellData {
+    if (this._manager && typeof (this._manager as { transition: (d: IAgentCellData, s: AgentCellState) => IAgentCellData }).transition === 'function') {
+      return (this._manager as { transition: (d: IAgentCellData, s: AgentCellState) => IAgentCellData }).transition(cellData, state);
+    }
+    return { ...cellData, state, updated_at: Date.now() };
+  }
+
+  requestReview(cellData: IAgentCellData): IAgentCellData {
+    if (this._manager && typeof (this._manager as { requestReview: (d: IAgentCellData) => IAgentCellData }).requestReview === 'function') {
+      return (this._manager as { requestReview: (d: IAgentCellData) => IAgentCellData }).requestReview(cellData);
+    }
+    return { ...cellData, state: AgentCellState.NEEDS_REVIEW, updated_at: Date.now() };
+  }
+
+  approve(cellData: IAgentCellData): IAgentCellData {
+    if (this._manager && typeof (this._manager as { approve: (d: IAgentCellData) => IAgentCellData }).approve === 'function') {
+      return (this._manager as { approve: (d: IAgentCellData) => IAgentCellData }).approve(cellData);
+    }
+    return { ...cellData, state: AgentCellState.POSTED, updated_at: Date.now() };
+  }
+
+  reject(cellData: IAgentCellData): IAgentCellData {
+    if (this._manager && typeof (this._manager as { reject: (d: IAgentCellData) => IAgentCellData }).reject === 'function') {
+      return (this._manager as { reject: (d: IAgentCellData) => IAgentCellData }).reject(cellData);
+    }
+    return { ...cellData, state: AgentCellState.ERROR, updated_at: Date.now() };
+  }
+
+  reset(cellData: IAgentCellData): IAgentCellData {
+    if (this._manager && typeof (this._manager as { reset: (d: IAgentCellData) => IAgentCellData }).reset === 'function') {
+      return (this._manager as { reset: (d: IAgentCellData) => IAgentCellData }).reset(cellData);
+    }
+    return { ...cellData, state: AgentCellState.DORMANT, reasoning: [], updated_at: Date.now() };
+  }
+}
+
+/**
+ * Wrapper class for Handshake Protocol
+ */
+class HandshakeProtocolWrapper {
+  private _protocol: unknown;
+
+  constructor(protocol?: unknown) {
+    this._protocol = protocol;
+  }
+
+  isAgentGenerated(value: unknown): boolean {
+    if (this._protocol && typeof (this._protocol as { isAgentGenerated: (v: unknown) => boolean }).isAgentGenerated === 'function') {
+      return (this._protocol as { isAgentGenerated: (v: unknown) => boolean }).isAgentGenerated(value);
+    }
+    // Default implementation: check if value has agent metadata
+    if (value && typeof value === 'object') {
+      return 'origin_id' in (value as object) || 'agent_confidence' in (value as object);
+    }
+    return false;
+  }
+
+  getAgentConfidence(value: unknown): number {
+    if (this._protocol && typeof (this._protocol as { getAgentConfidence: (v: unknown) => number }).getAgentConfidence === 'function') {
+      return (this._protocol as { getAgentConfidence: (v: unknown) => number }).getAgentConfidence(value);
+    }
+    // Default implementation: return confidence from metadata
+    if (value && typeof value === 'object' && 'agent_confidence' in (value as object)) {
+      return (value as { agent_confidence: number }).agent_confidence;
+    }
+    return 1.0;
   }
 }
 

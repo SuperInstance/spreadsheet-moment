@@ -8,9 +8,9 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   ClawState,
   ClawStateInfo,
-  ClawUpdateEvent,
   WebSocketMessageType
-} from '../components/ClawCell/types';
+} from '@spreadsheet-moment/agent-core';
+import type { ClawUpdateEvent } from '../components/ClawCell/types';
 
 /**
  * WebSocket message types

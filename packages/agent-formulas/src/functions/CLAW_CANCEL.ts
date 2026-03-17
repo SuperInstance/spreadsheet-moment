@@ -7,8 +7,7 @@
  * @version 3.0.0 - Phase 3: Enhanced singleton management with disposal
  */
 
-import { FunctionType } from '@univerjs/core';
-import type { Nullable, InterpreterValue } from '@univerjs/core';
+import { FunctionType, type Nullable, type InterpreterValue } from '../types';
 import ClawClientManager from '../utils/ClawClientManager';
 
 export const CLAW_CANCEL = {

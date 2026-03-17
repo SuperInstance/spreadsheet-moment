@@ -12,26 +12,42 @@
 
 import {
   Plugin,
-  Injector,
   IUniverInstanceService,
   ICommandService,
-  LifecycleStages,
 } from '@univerjs/core';
-import {
-  ICellModel,
-} from '@univerjs/engine-render';
-import {
-  LexerTree,
-} from '@univerjs/engine-formula';
 
 import {
   TraceProtocol,
   StateManager,
   AgentHandshakeProtocol,
   IAgentCellData,
-  AgentCellType,
   AgentCellState,
 } from '../index';
+
+// Type definitions for Univer interfaces that may not be exported
+interface ICellModel {
+  getValue(row: number, col: number): any;
+  setValue(row: number, col: number, value: any): void;
+}
+
+interface Injector {
+  add(binding: [symbol, { useValue: any }]): void;
+}
+
+interface IWorkbook {
+  getSheetBySheetId(sheetId: string): IWorksheet | null;
+}
+
+interface IWorksheet {
+  getCellModel(): ICellModel;
+}
+
+// CommandType enum fallback
+const CommandType = {
+  COMMAND: 1,
+  OPERATION: 2,
+  OBSOLETE: 3,
+} as const;
 
 /**
  * Agent Core Plugin Configuration
@@ -77,14 +93,20 @@ export class AgentCorePlugin extends Plugin {
   private _traceProtocol?: TraceProtocol;
   private _stateManager?: StateManager;
   private _handshakeProtocol?: AgentHandshakeProtocol;
+  private _univerInstanceService: IUniverInstanceService | null = null;
+  private _commandService: ICommandService | null = null;
+  private _injector: Injector | null = null;
 
   constructor(
     config: IAgentCorePluginConfig = {},
-    @IUniverInstanceService private readonly _univerInstanceService: IUniverInstanceService,
-    @ICommandService private readonly _commandService: ICommandService,
-    @Injector private readonly _injector: Injector
+    univerInstanceService?: IUniverInstanceService,
+    commandService?: ICommandService,
+    injector?: Injector
   ) {
     super('AGENT_CORE_PLUGIN');
+    if (univerInstanceService) this._univerInstanceService = univerInstanceService;
+    if (commandService) this._commandService = commandService;
+    if (injector) this._injector = injector;
   }
 
   /**
@@ -101,9 +123,11 @@ export class AgentCorePlugin extends Plugin {
     this._handshakeProtocol = new AgentHandshakeProtocol();
 
     // Register services with dependency injection
-    this._injector.add([ITraceProtocol, { useValue: this._traceProtocol }]);
-    this._injector.add([IStateManager, { useValue: this._stateManager }]);
-    this._injector.add([IAgentHandshakeProtocol, { useValue: this._handshakeProtocol }]);
+    if (this._injector) {
+      this._injector.add([ITraceProtocol, { useValue: this._traceProtocol }]);
+      this._injector.add([IStateManager, { useValue: this._stateManager }]);
+      this._injector.add([IAgentHandshakeProtocol, { useValue: this._handshakeProtocol }]);
+    }
 
     console.log('[AgentCorePlugin] Initialized successfully');
   }
@@ -113,13 +137,15 @@ export class AgentCorePlugin extends Plugin {
    */
   override onRendered(): void {
     // Intercept cell value changes to apply trace protocol
-    this._commandService.registerCommand({
-      id: 'agent.operation.set-cell-value',
-      type: 3, // CommandType.Obsolete
-      handler: (accessor, params) => {
-        return this._handleCellOperation(params);
-      },
-    });
+    if (this._commandService) {
+      this._commandService.registerCommand({
+        id: 'agent.operation.set-cell-value',
+        type: 3 as unknown as typeof CommandType.OBSOLETE,
+        handler: (_accessor: unknown, params: unknown) => {
+          return this._handleCellOperation(params as Record<string, unknown>);
+        },
+      });
+    }
 
     console.log('[AgentCorePlugin] Command interceptors registered');
   }
@@ -127,11 +153,20 @@ export class AgentCorePlugin extends Plugin {
   /**
    * Handle cell operation with trace protocol
    */
-  private _handleCellOperation(params: any): boolean {
-    const { unitId, subUnitId, row, col, value } = params;
+  private _handleCellOperation(params: Record<string, unknown>): boolean {
+    const { unitId, subUnitId, row, col } = params as {
+      unitId: string;
+      subUnitId: string;
+      row: number;
+      col: number;
+    };
 
     // Get cell model
-    const workbook = this._univerInstanceService.getUniverSheetInstance(unitId);
+    if (!this._univerInstanceService) {
+      return false;
+    }
+
+    const workbook = (this._univerInstanceService as unknown as { getUniverSheetInstance: (id: string) => IWorkbook | null }).getUniverSheetInstance(unitId);
     if (!workbook) {
       return false;
     }
@@ -177,13 +212,15 @@ export class AgentCorePlugin extends Plugin {
   /**
    * Extract agent data from cell
    */
-  private _extractAgentData(cell: any): IAgentCellData | null {
+  private _extractAgentData(cell: unknown): IAgentCellData | null {
     if (!cell || typeof cell !== 'object') {
       return null;
     }
 
+    const cellObj = cell as Record<string, unknown>;
+
     // Check for agent-specific properties
-    if ('origin_id' in cell || 'cell_type' in cell || 'state' in cell) {
+    if ('origin_id' in cellObj || 'cell_type' in cellObj || 'state' in cellObj) {
       return cell as IAgentCellData;
     }
 
@@ -216,6 +253,11 @@ export class AgentCorePlugin extends Plugin {
 /**
  * Factory function to create the plugin with config
  */
-export function createAgentCorePlugin(config?: IAgentCorePluginConfig) {
-  return new AgentCorePlugin(config || {});
+export function createAgentCorePlugin(
+  config?: IAgentCorePluginConfig,
+  univerInstanceService?: IUniverInstanceService,
+  commandService?: ICommandService,
+  injector?: Injector
+) {
+  return new AgentCorePlugin(config || {}, univerInstanceService, commandService, injector);
 }

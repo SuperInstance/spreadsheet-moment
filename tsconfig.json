@@ -16,7 +16,8 @@
     "sourceMap": true,
     "outDir": "./dist",
     "composite": true,
-    "incremental": true
+    "incremental": true,
+    "jsx": "react-jsx"
   },
-  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "tests", "workers", "website"]
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts", "tests", "workers", "website", "desktop"]
 }

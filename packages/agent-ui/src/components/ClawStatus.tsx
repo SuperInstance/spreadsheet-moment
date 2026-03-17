@@ -400,7 +400,7 @@ export const ClawStatus: React.FC<ClawStatusProps> = ({
    */
   const renderStatusIndicator = () => {
     const state = agentCell.state;
-    const colors = {
+    const colors: Record<string, string> = {
       [AgentCellState.DORMANT]: '#94a3b8',
       [AgentCellState.THINKING]: '#3b82f6',
       [AgentCellState.NEEDS_REVIEW]: '#f59e0b',
@@ -409,7 +409,7 @@ export const ClawStatus: React.FC<ClawStatusProps> = ({
       [AgentCellState.ERROR]: '#ef4444'
     };
 
-    const labels = {
+    const labels: Record<string, string> = {
       [AgentCellState.DORMANT]: 'Dormant',
       [AgentCellState.THINKING]: 'Thinking',
       [AgentCellState.NEEDS_REVIEW]: 'Needs Review',
@@ -417,6 +417,8 @@ export const ClawStatus: React.FC<ClawStatusProps> = ({
       [AgentCellState.ARCHIVED]: 'Archived',
       [AgentCellState.ERROR]: 'Error'
     };
+
+    if (!state) return null;
 
     return (
       <div style={{
@@ -429,14 +431,14 @@ export const ClawStatus: React.FC<ClawStatusProps> = ({
           width: '8px',
           height: '8px',
           borderRadius: '50%',
-          backgroundColor: colors[state],
+          backgroundColor: colors[state] || '#94a3b8',
           animation: state === AgentCellState.THINKING ? 'pulse 1.5s infinite' : 'none',
-          boxShadow: `0 0 8px ${colors[state]}40`
+          boxShadow: `0 0 8px ${colors[state] || '#94a3b8'}40`
         }} />
         <span style={{
           fontSize: '13px',
           fontWeight: 500,
-          color: colors[state]
+          color: colors[state] || '#94a3b8'
         }}>
           {labels[state] || 'Unknown'}
         </span>
