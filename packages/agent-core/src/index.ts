@@ -736,16 +736,35 @@ export {
   createMicrotask
 } from './performance';
 
+// Import modules needed for default export (interfaces are types only, not runtime values)
+import { AgentCorePlugin } from './plugins/AgentCorePlugin';
+import { AgentCellService } from './services/AgentCellService';
+import {
+  ValidationError,
+  isAgentCell,
+  isAgentCellType,
+  isAgentCellState,
+  validateAgentCell,
+  validateAgentConfig,
+  getAgentCellTypeName,
+  getAgentCellStateName,
+  isAgentCellActive,
+  canActivateAgentCell,
+  getAgentCellStateColor
+} from './utils/validators';
+import { ClawClient, ClawAPIError } from './api';
+import { MetricsCollector, HealthChecker } from './monitoring';
+import { MonitoringMiddleware } from './middleware';
+import { PerformanceMonitor, CellUpdateOptimizer } from './performance';
+
 // ============================================================================
 // DEFAULT EXPORT
 // ============================================================================
 
 export default {
-  // Core types
+  // Core enums (interfaces IAgentCellData and IAgentConfig are types, not runtime values)
   AgentCellType,
   AgentCellState,
-  IAgentCellData,
-  IAgentConfig,
 
   // Protocols and managers
   TraceProtocol,

@@ -15,6 +15,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { z } from 'zod';
 import {
   ClawCellConfig,
   ClawState,
