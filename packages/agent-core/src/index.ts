@@ -696,6 +696,47 @@ export type {
 } from './middleware';
 
 // ============================================================================
+// PERFORMANCE OPTIMIZATION EXPORTS (Round 5: Production Polish)
+// ============================================================================
+
+export {
+  PerformanceMonitor,
+  CellUpdateOptimizer,
+  createPerformanceMonitor,
+  getPerformanceMonitor,
+  resetPerformanceMonitor,
+  createCellUpdateOptimizer,
+  getCellUpdateOptimizer,
+  resetCellUpdateOptimizer
+} from './performance';
+
+export type {
+  PerformanceMetrics,
+  PerformanceReport,
+  CellUpdateMetrics,
+  PerformanceIssue,
+  OptimizationRecommendation,
+  PerformanceThresholds,
+  OptimizationStrategy
+} from './performance';
+
+export {
+  measurePerformance,
+  createPerformanceMarker,
+  withPerformanceMonitoring,
+  formatDuration,
+  formatBytes,
+  calculatePerformanceScore,
+  getPerformanceGrade,
+  debounce,
+  throttle,
+  memoize,
+  rafThrottle,
+  whenIdle,
+  createMicrotask
+} from './performance';
+
+// ============================================================================
 // DEFAULT EXPORT
 // ============================================================================
 
@@ -739,5 +780,9 @@ export default {
   HealthChecker,
 
   // Middleware
-  MonitoringMiddleware
+  MonitoringMiddleware,
+
+  // Performance
+  PerformanceMonitor,
+  CellUpdateOptimizer
 };
