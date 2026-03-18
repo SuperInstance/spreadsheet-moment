@@ -175,7 +175,7 @@ export interface HealthCheckerConfig {
  * ```
  */
 export class HealthChecker extends EventEmitter {
-  private config: Required<HealthCheckerConfig>;
+  private config: Omit<Required<HealthCheckerConfig>, 'metricsCollector'> & { metricsCollector?: MetricsCollector };
   private checks: Map<string, HealthCheckConfig> = new Map();
   private checkTimers: Map<string, NodeJS.Timeout> = new Map();
   private failureCounts: Map<string, number> = new Map();
