@@ -143,6 +143,63 @@ spreadsheet-moment/
 │   └── agent-formulas/  # Spreadsheet functions (CLAW_NEW, CLAW_QUERY, CLAW_CANCEL)
 ```
 
+### Package Dependencies
+
+```mermaid
+graph LR
+    subgraph Packages
+        formulas[agent-formulas]
+        ui[agent-ui]
+        core[agent-core]
+        ai[agent-ai]
+    end
+
+    formulas --> core
+    formulas --> ai
+    ui --> core
+    ui --> ai
+
+    subgraph External
+        univer[Univer SDK]
+        react[React]
+    end
+
+    formulas --> univer
+    ui --> react
+```
+
+### Agent-Cell Interaction
+
+```mermaid
+graph TB
+    subgraph Spreadsheet["Spreadsheet Grid"]
+        cell[A1: CLAW_NEW]
+        display[Cell Display]
+    end
+
+    subgraph AgentSystem["Agent System"]
+        formula[Formula Parser]
+        state[StateManager]
+        client[ClawClient]
+    end
+
+    subgraph Backend["Claw Backend"]
+        api[REST API]
+        ws[WebSocket]
+        engine[Agent Engine]
+    end
+
+    cell -->|Parse| formula
+    formula -->|Create| state
+    state -->|Register| client
+    client -->|POST /claws| api
+    api -->|Spawn| engine
+    engine -->|Updates| ws
+    ws -->|Push| client
+    client -->|Notify| state
+    state -->|Render| display
+```
+
 ### Data Flow
 
 ```mermaid
@@ -241,6 +298,33 @@ stateDiagram-v2
     WAITING_APPROVAL --> COMPLETE: Rejected
     ERROR --> [*]: Dispose
     COMPLETE --> [*]: Dispose
+```
+
+### Multi-Agent Coordination
+
+```mermaid
+graph TB
+    subgraph CellA1["Cell A1 - Master Agent"]
+        master[Portfolio Monitor]
+    end
+
+    subgraph Workers["Worker Cells"]
+        b1[B1: Price Watcher]
+        b2[B2: News Analyzer]
+        b3[B3: Risk Calculator]
+    end
+
+    subgraph Output["Output Cell"]
+        c1[C1: Alert Dispatcher]
+    end
+
+    master -->|Delegate| b1
+    master -->|Delegate| b2
+    master -->|Delegate| b3
+    b1 -->|Report| master
+    b2 -->|Report| master
+    b3 -->|Report| master
+    master -->|Trigger| c1
 ```
 
 ---
@@ -369,6 +453,65 @@ Spreadsheet Moment connects to [Claw](https://github.com/SuperInstance/claw) for
         └────────────────────────────┘
 ```
 
+### API Request/Response Flow
+
+```mermaid
+sequenceDiagram
+    participant F as Frontend
+    participant C as ClawClient
+    participant A as Claw API
+    participant E as Agent Engine
+
+    Note over F,E: Create Agent Flow
+    F->>C: CLAW_NEW("monitor", ...)
+    C->>A: POST /api/claws
+    A->>E: spawnAgent(config)
+    E-->>A: agentId, status
+    A-->>C: 201 Created + agent
+    C-->>F: AgentState (IDLE)
+
+    Note over F,E: WebSocket Updates
+    C->>A: WS connect /ws/claws/{id}
+    A-->>C: WS connected
+    E->>A: stateChange(THINKING)
+    A->>C: WS message
+    C-->>F: AgentState (THINKING)
+
+    Note over F,E: Query Agent Flow
+    F->>C: CLAW_QUERY(ref)
+    C->>A: GET /api/claws/{id}
+    A-->>C: 200 OK + agent
+    C-->>F: AgentState (current)
+```
+
+### Claw Integration Components
+
+```mermaid
+graph TB
+    subgraph Frontend["Spreadsheet Moment"]
+        formulas[Formula Functions]
+        client[ClawClient]
+        ws[WebSocket Manager]
+        state[StateManager]
+    end
+
+    subgraph Backend["Claw API Server"]
+        rest[REST Endpoints]
+        wss[WebSocket Server]
+        auth[Authentication]
+        engine[Agent Engine]
+    end
+
+    formulas -->|HTTP| client
+    client -->|POST/GET| rest
+    client -->|Connect| ws
+    ws -->|Subscribe| wss
+    rest -->|Validate| auth
+    rest -->|Execute| engine
+    wss -->|Broadcast| engine
+    state -->|Cache| client
+```
+
 **Integration Status:** API contracts defined, mock testing available, live integration requires Claw deployment.
 
 ### Univer Foundation
@@ -415,6 +558,58 @@ spreadsheet-moment/
 ├── docs/                    # Documentation
 ├── tests/                   # E2E tests
 └── deployment/              # Deployment configs
+```
+
+### Testing Structure
+
+```mermaid
+graph TB
+    subgraph UnitTests["Unit Tests (Jest)"]
+        state[StateManager Tests]
+        trace[TraceProtocol Tests]
+        client[ClawClient Tests]
+        metrics[MetricsCollector Tests]
+        health[HealthChecker Tests]
+    end
+
+    subgraph IntegrationTests["Integration Tests"]
+        api[API Integration]
+        ws[WebSocket Integration]
+        formula[Formula Integration]
+    end
+
+    subgraph E2ETests["E2E Tests (Playwright)"]
+        ui[UI Workflows]
+        agent[Agent Lifecycle]
+        realtime[Real-time Updates]
+    end
+
+    subgraph LoadTests["Load Tests (k6)"]
+        concurrent[Concurrent Agents]
+        throughput[Throughput]
+        latency[Latency Benchmarks]
+    end
+
+    UnitTests -->|Mock APIs| IntegrationTests
+    IntegrationTests -->|Test Server| E2ETests
+    E2ETests -->|Staging| LoadTests
+```
+
+### Test Coverage by Package
+
+```mermaid
+graph LR
+    subgraph Coverage["Test Coverage"]
+        core[agent-core: 100%]
+        ai[agent-ai: 85%]
+        ui[agent-ui: 70%]
+        formulas[agent-formulas: 90%]
+    end
+
+    core -->|Stable| stable[Production Ready]
+    ai -->|Good| progress[In Progress]
+    ui -->|Needs Work| progress
+    formulas -->|Good| progress
 ```
 
 ---
