@@ -689,10 +689,6 @@ describe('Health Checks Integration Tests', () => {
 
       await checker.checkHealth();
 
-      const performanceMetrics = metricsCollector.getMetrics(
-        metricsCollector.getMetrics = () => [] as any
-      );
-
       // Verify health check was recorded
       const allMetrics = metricsCollector.getMetrics();
       const healthMetrics = allMetrics.filter(m =>

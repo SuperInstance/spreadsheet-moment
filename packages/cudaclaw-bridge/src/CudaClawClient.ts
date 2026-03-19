@@ -39,7 +39,16 @@ import {
 // CONFIGURATION DEFAULTS
 // ============================================================================
 
-const DEFAULT_CONFIG: Required<Omit<CudaClawClientConfig, 'serverUrl' | 'apiKey'>> = {
+const DEFAULT_CONFIG: Omit<CudaClawClientConfig, 'serverUrl' | 'apiKey'> & {
+  timeout: number;
+  maxRetries: number;
+  retryDelay: number;
+  enableWebSocket: boolean;
+  enableGPUAcceleration: boolean;
+  enableSmartCRDT: boolean;
+  maxBatchSize: number;
+  debug: boolean;
+} = {
   websocketUrl: '',
   timeout: 30000,
   maxRetries: 3,
@@ -62,7 +71,16 @@ const DEFAULT_CONFIG: Required<Omit<CudaClawClientConfig, 'serverUrl' | 'apiKey'
  * Supports both HTTP and WebSocket connections.
  */
 export class CudaClawClient {
-  private config: Required<CudaClawClientConfig>;
+  private config: CudaClawClientConfig & {
+    timeout: number;
+    maxRetries: number;
+    retryDelay: number;
+    enableWebSocket: boolean;
+    enableGPUAcceleration: boolean;
+    enableSmartCRDT: boolean;
+    maxBatchSize: number;
+    debug: boolean;
+  };
   private eventHandlers: Map<CudaClawEvent, Set<EventHandler>>;
   private websocket: WebSocket | null = null;
   private reconnectTimer: NodeJS.Timeout | null = null;
@@ -70,7 +88,7 @@ export class CudaClawClient {
   private currentBatchId: string | null = null;
 
   constructor(config: CudaClawClientConfig) {
-    this.config = { ...DEFAULT_CONFIG, ...config };
+    this.config = { ...DEFAULT_CONFIG, ...config } as typeof this.config;
     this.eventHandlers = new Map();
 
     // Initialize event handler sets
@@ -208,7 +226,7 @@ export class CudaClawClient {
         );
       }
 
-      const result: CellUpdateResult = await response.json();
+      const result = (await response.json()) as CellUpdateResult;
       const executionTime = Date.now() - startTime;
 
       this.emit('cellUpdated', {
@@ -253,7 +271,7 @@ export class CudaClawClient {
         );
       }
 
-      const cell: SmartCRDTCell = await response.json();
+      const cell = (await response.json()) as SmartCRDTCell;
       return cell;
     } catch (error) {
       this.emit('error', {
@@ -336,7 +354,7 @@ export class CudaClawClient {
         );
       }
 
-      const result: BatchUpdateResult = await response.json();
+      const result = (await response.json()) as BatchUpdateResult;
       const executionTime = Date.now() - startTime;
 
       this.emit('batchCompleted', {
@@ -388,7 +406,7 @@ export class CudaClawClient {
         );
       }
 
-      const resolved: ResolvedCell = await response.json();
+      const resolved = (await response.json()) as ResolvedCell;
 
       this.emit('conflictResolved', {
         cell_id: request.cell_id,
@@ -435,7 +453,7 @@ export class CudaClawClient {
         );
       }
 
-      const stats: GPUStats = await response.json();
+      const stats = (await response.json()) as GPUStats;
 
       this.emit('gpuStatsUpdate', {
         stats: stats,
@@ -475,7 +493,7 @@ export class CudaClawClient {
         );
       }
 
-      const data = await response.json();
+      const data = (await response.json()) as { depth: number };
       return data.depth;
     } catch (error) {
       this.emit('error', {

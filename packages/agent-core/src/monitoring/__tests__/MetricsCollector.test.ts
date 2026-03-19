@@ -348,7 +348,7 @@ describe('MetricsCollector', () => {
 
     test('should handle missing process.memoryUsage gracefully', () => {
       const originalProcess = global.process;
-      delete (global as any).process =;
+      delete (global as any).process;
 
       expect(() => collector.recordMemoryUsage()).not.toThrow();
 

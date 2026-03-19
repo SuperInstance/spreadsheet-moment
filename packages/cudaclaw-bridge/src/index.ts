@@ -29,7 +29,8 @@ export {
 } from './BatchUpdater';
 
 // StateManager Integration
-export { default as StateManagerIntegration } from './StateManagerIntegration';
+// Temporarily disabled due to missing type dependencies
+// export { default as StateManagerIntegration } from './StateManagerIntegration';
 
 // Types
 export * from './types';
