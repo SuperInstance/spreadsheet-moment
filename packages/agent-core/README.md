@@ -1,13 +1,20 @@
 # @spreadsheet-moment/agent-core
 
-**Core agent system** providing foundational services for Spreadsheet Moment.
+**Core platform services** providing foundational capabilities for Spreadsheet Moment.
 
 [![Tests](https://img.shields.io/badge/Tests-100%25-brightgreen.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 [![Coverage](https://img.shields.io/badge/Coverage-61%25-orange.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 
 ## Overview
 
-The `@spreadsheet-moment/agent-core` package provides the foundational services for the Spreadsheet Moment platform. It implements the core agent lifecycle, state management, API communication, and monitoring capabilities.
+The `@spreadsheet-moment/agent-core` package provides essential platform services for Spreadsheet Moment:
+- **StateManager** - Thread-safe state management for spreadsheet operations
+- **TraceProtocol** - Execution tracing with loop detection
+- **MetricsCollector** - Performance monitoring and metrics
+- **HealthChecker** - System health monitoring
+- **ClawClient** (Optional) - API client for claw backend integration
+
+This package works standalone for spreadsheet operations. The ClawClient is only needed if you want to integrate with the optional claw agent backend.
 
 ## Features
 
@@ -66,12 +73,15 @@ traceProtocol.recordStep(traceId, {
 const hasLoop = traceProtocol.detectLoop('claw_123');
 ```
 
-### ClawClient
-Production-ready HTTP/WebSocket Claw API client:
+### ClawClient (Optional)
+HTTP/WebSocket client for optional claw backend integration:
+
+> **Note:** ClawClient is only needed if you want to integrate with the claw agent backend. Spreadsheet Moment works fully without this component.
 
 ```typescript
 import { ClawClient } from '@spreadsheet-moment/agent-core';
 
+// Optional: Connect to claw backend for agent features
 const client = new ClawClient({
   baseUrl: 'http://localhost:8080',
   wsUrl: 'ws://localhost:8080/ws',
@@ -81,13 +91,13 @@ const client = new ClawClient({
   timeout: 30000
 });
 
-// Create agent
+// Create agent (requires claw backend)
 const response = await client.createClaw({
   config: clawConfig,
   context: { sheetId: 'sheet_1', userId: 'user_1' }
 });
 
-// Subscribe to real-time updates
+// Subscribe to real-time updates (requires claw backend + WebSocket)
 client.on('reasoningStep', (step) => {
   console.log('Reasoning:', step.content);
 });
@@ -182,28 +192,70 @@ pnpm add @spreadsheet-moment/agent-core
 import {
   StateManager,
   TraceProtocol,
-  ClawClient,
   MetricsCollector,
   HealthChecker
 } from '@spreadsheet-moment/agent-core';
 
-// Initialize core services
+// Initialize core platform services (always needed)
 const stateManager = new StateManager();
 const traceProtocol = new TraceProtocol();
 const metrics = new MetricsCollector();
 const healthChecker = new HealthChecker();
+```
 
-// Initialize API client
+### Optional: Claw Backend Integration
+
+```typescript
+import { ClawClient } from '@spreadsheet-moment/agent-core';
+
+// Only needed if integrating with claw backend
 const client = new ClawClient({
   baseUrl: process.env.CLAW_API_URL || 'http://localhost:8080',
   apiKey: process.env.CLAW_API_KEY
 });
 ```
 
-### Agent Lifecycle Management
+### Spreadsheet Operation Tracking
 
 ```typescript
-// Create agent
+// Track spreadsheet operations
+const operationId = 'op_' + Date.now();
+
+stateManager.createAgent(operationId, {
+  state: 'calculating',
+  confidence: 1.0,
+  reasoning: [],
+  memory: []
+});
+
+// Track execution trace
+const traceId = traceProtocol.registerExecution({
+  clawId: operationId,
+  cellId: 'A1',
+  sheetId: 'sheet_1',
+  origin: 'user_formula'
+});
+
+traceProtocol.recordStep(traceId, {
+  timestamp: Date.now(),
+  action: 'formula_evaluation',
+  data: { formula: '=SUM(B1:B10)' }
+});
+
+// Monitor state changes
+stateManager.on('stateChange', (id, state) => {
+  metrics.recordHistogram('operation_duration', state.duration);
+});
+
+// Clean up
+stateManager.dispose();
+traceProtocol.dispose();
+```
+
+### Optional: Agent Backend Integration
+
+```typescript
+// Only if using claw backend
 const clawId = await client.createClaw({
   config: {
     id: 'claw_123',
@@ -222,23 +274,7 @@ const clawId = await client.createClaw({
   }
 });
 
-// Track execution
-const traceId = traceProtocol.registerExecution({
-  clawId,
-  cellId: 'A1',
-  sheetId: 'sheet_1',
-  origin: 'user_trigger'
-});
-
-// Monitor state changes
-stateManager.on('stateChange', (agentId, state) => {
-  metrics.recordHistogram('agent_state_duration', state.duration);
-});
-
-// Clean up
-stateManager.dispose();
-traceProtocol.dispose();
-client.dispose();
+client.dispose(); // Clean up client when done
 ```
 
 ## API Reference
@@ -324,4 +360,4 @@ Apache-2.0
 
 - [GitHub](https://github.com/SuperInstance/spreadsheet-moment)
 - [Documentation](https://docs.spreadsheet-moment.dev)
-- [Claw API](https://github.com/SuperInstance/claw)
+- [Claw Backend (Optional)](https://github.com/SuperInstance/claw)

@@ -1,6 +1,6 @@
 # @spreadsheet-moment/cudaclaw-bridge
 
-**GPU-accelerated SmartCRDT bridge for SpreadsheetMoment using CudaClaw**
+**Optional GPU acceleration for high-performance spreadsheet operations**
 
 [![Tests](https://img.shields.io/badge/Tests-Coming%20Soon-yellow.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
@@ -10,9 +10,25 @@
 
 ## Overview
 
-`@spreadsheet-moment/cudaclaw-bridge` provides TypeScript/JavaScript client bindings for [CudaClaw](https://github.com/SuperInstance/cudaclaw), enabling GPU-accelerated SmartCRDT operations in SpreadsheetMoment.
+> **Note:** This is an **optional** package for GPU acceleration. Spreadsheet Moment works fully without it.
 
-### Key Features
+`@spreadsheet-moment/cudaclaw-bridge` provides GPU-accelerated operations for high-performance scenarios:
+- Large-scale batch updates (1000+ cells)
+- Real-time collaboration with many users
+- Complex calculations across large datasets
+
+**When you need this:**
+- Processing millions of cells
+- 100+ concurrent users editing
+- Sub-millisecond update latency requirements
+- GPU-accelerated CRDT conflict resolution
+
+**When you DON'T need this:**
+- Standard spreadsheet usage (CPU is plenty fast)
+- Small to medium datasets (<10,000 cells)
+- Single-user or small team collaboration
+
+### Key Features (Requires CudaClaw Backend + GPU)
 
 - **GPU Acceleration:** 10-100x faster cell operations via CUDA
 - **SmartCRDT:** Automatic conflict resolution for real-time collaboration
@@ -22,6 +38,16 @@
 - **WebSocket Support:** Real-time updates and streaming
 
 ---
+
+## Prerequisites
+
+Before installing this package, you need:
+
+1. **NVIDIA GPU** with CUDA support
+2. **CudaClaw Backend** running ([https://github.com/SuperInstance/cudaclaw](https://github.com/SuperInstance/cudaclaw))
+3. High-performance requirements (see "When you need this" above)
+
+If you don't have these, **you don't need this package**. Spreadsheet Moment works great without GPU acceleration.
 
 ## Installation
 
@@ -33,21 +59,23 @@ pnpm add @spreadsheet-moment/cudaclaw-bridge
 
 ## Quick Start
 
+> **Important:** This requires a CudaClaw backend server with GPU to be running.
+
 ### Basic Setup
 
 ```typescript
 import { CudaClawClient } from '@spreadsheet-moment/cudaclaw-bridge';
 
-// Create client
+// Create client (requires CudaClaw backend running)
 const client = new CudaClawClient({
-  serverUrl: 'http://localhost:8080',
+  serverUrl: 'http://localhost:8080',  // CudaClaw backend URL
   websocketUrl: 'ws://localhost:8081',
-  apiKey: process.env.CUDACLAWS_API_KEY,
+  apiKey: process.env.CUDACLAW_API_KEY,
   enableGPUAcceleration: true,
   enableWebSocket: true,
 });
 
-// Connect to server
+// Connect to CudaClaw backend
 await client.connect();
 ```
 
@@ -543,14 +571,32 @@ Apache-2.0 - See [LICENSE](LICENSE)
 
 ---
 
+## Should You Use This?
+
+### Use GPU Acceleration If:
+- You're processing 100,000+ cells regularly
+- You have 100+ concurrent users
+- You need sub-millisecond update latency
+- You have NVIDIA GPU hardware available
+- You've already optimized CPU performance
+
+### DON'T Use GPU Acceleration If:
+- You're building a standard spreadsheet app (CPU is fast enough)
+- You have <10,000 cells in typical workbooks
+- You have <100 concurrent users
+- You don't have GPU hardware
+- You haven't optimized CPU performance yet
+
+**For 99% of use cases, Spreadsheet Moment without GPU acceleration is plenty fast.**
+
 ## Links
 
 - **GitHub:** https://github.com/SuperInstance/spreadsheet-moment
-- **CudaClaw:** https://github.com/SuperInstance/cudaclaw
+- **CudaClaw Backend:** https://github.com/SuperInstance/cudaclaw (Required)
 - **Documentation:** https://docs.spreadsheet-moment.dev
 
 ---
 
 **Version:** 0.1.0
-**Last Updated:** 2026-03-18
-**Status:** Alpha - Under Active Development
+**Last Updated:** 2026-03-19
+**Status:** Optional GPU Acceleration Package (Requires CudaClaw Backend + NVIDIA GPU)

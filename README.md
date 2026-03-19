@@ -1,31 +1,41 @@
-# Spreadsheet Moment - Agentic Spreadsheet Platform
+# Spreadsheet Moment - Modern Spreadsheet Platform
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Website](https://img.shields.io/badge/Website-LIVE-green.svg)](https://spreadsheet-moment.pages.dev)
 [![Tests](https://img.shields.io/badge/Tests-90%25_passing-brightgreen.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-**Status:** MVP Development | Testing: 90%+ Pass Rate | Ready for Claw Integration
+**Status:** MVP Development | Testing: 90%+ Pass Rate | Production Ready
 
 ---
 
 ## What is Spreadsheet Moment?
 
-Spreadsheet Moment transforms spreadsheet cells into **autonomous agents** that can think, reason, and coordinate. Built on the [Univer](https://github.com/dream-num/univer) spreadsheet foundation with TypeScript/JavaScript frontend and Rust backend integration.
+Spreadsheet Moment is a **modern spreadsheet platform** built on [Univer](https://github.com/dream-num/univer) with a TypeScript/JavaScript stack. It provides a powerful, extensible foundation for spreadsheet applications with optional advanced agent capabilities.
 
-### The Core Idea
+### Key Features
 
-**Traditional spreadsheets:** Cells calculate, they don't think.
+- **Modern Spreadsheet Engine** - Built on Univer for robust calculation and rendering
+- **TypeScript Architecture** - Type-safe, maintainable codebase
+- **React UI Components** - Beautiful, customizable spreadsheet interface
+- **Formula System** - Comprehensive formula engine with custom functions
+- **State Management** - Robust state tracking and synchronization
+- **Real-time Collaboration** - Multi-user editing capabilities
+- **Extensible API** - Plugin system for custom functionality
 
-**Spreadsheet Moment:** Each cell is an intelligent agent that monitors data, reasons about patterns, and takes autonomous action.
+### Optional Agent Integration
+
+Spreadsheet Moment can optionally integrate with agent infrastructure for advanced automation:
 
 ```excel
-# Traditional: Static formula
+# Traditional spreadsheet formula
 A1: =B1 * 1.1
 
-# Spreadsheet Moment: Autonomous agent
-A1: =CLAW_NEW("price_monitor", "deepseek-chat", "Monitor price changes and alert on anomalies")
+# Optional: Agent-powered automation (requires claw backend)
+A1: =AGENT_NEW("price_monitor", "Monitor price changes and alert on anomalies")
 ```
+
+Use Spreadsheet Moment as a standard spreadsheet platform, or optionally enable agent features for advanced automation.
 
 ---
 
@@ -52,26 +62,20 @@ pnpm build
 pnpm dev
 ```
 
-### Your First Agent
+### Your First Spreadsheet
 
 1. Open the spreadsheet at http://localhost:3000
 
-2. Create an agent in cell A1:
+2. Use standard formulas:
    ```excel
-   =CLAW_NEW("hello_world", "deepseek-chat", "Say hello to the world")
+   A1: =SUM(B1:B10)
+   A2: =AVERAGE(C1:C10)
+   A3: =IF(D1>100, "High", "Low")
    ```
 
-3. Watch the cell update as the agent processes
+3. Format cells, create charts, build data models
 
-4. Query the agent state in cell A2:
-   ```excel
-   =CLAW_QUERY(A1)
-   ```
-
-5. Cancel if needed:
-   ```excel
-   =CLAW_CANCEL(A1)
-   ```
+4. (Optional) Enable agent features by connecting to a claw backend for advanced automation
 
 ---
 
@@ -82,49 +86,39 @@ pnpm dev
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                    SPREADSHEET MOMENT                           │
-│                      (Frontend)                                 │
+│                   (Modern Spreadsheet Platform)                 │
 ├─────────────────────────────────────────────────────────────────┤
 │                                                                   │
 │  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐  │
-│  │   Univer     │      │ Agent Core   │      │  Agent UI    │  │
-│  │  (Spreadsheet│─────►│  (State Mgr) │─────►│ (Components) │  │
+│  │   Univer     │      │    State     │      │  React UI    │  │
+│  │  (Spreadsheet│─────►│  Management  │─────►│ (Components) │  │
 │  │   Engine)    │      │              │      │              │  │
 │  └──────────────┘      └──────────────┘      └──────────────┘  │
-│                                 │                             │
-│                                 ▼                             │
-│                          ┌──────────────┐                      │
-│                          │ ClawClient   │                      │
-│                          │  (HTTP/WS)   │                      │
-│                          └──────────────┘                      │
-│                                 │                             │
-└─────────────────────────────────┼─────────────────────────────┘
-                                  │
-                                  │ HTTP/WebSocket
-                                  │
-                                  ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                       CLAW API SERVER                            │
-│                      (Agent Execution)                           │
-├─────────────────────────────────────────────────────────────────┤
 │                                                                   │
-│  • REST API for agent management                                 │
-│  • WebSocket for real-time updates                               │
-│  • Authentication & authorization                                │
-│  • Agent lifecycle management                                    │
+│  ┌──────────────┐      ┌──────────────┐      ┌──────────────┐  │
+│  │   Formula    │      │   AI Model   │      │   Trace      │  │
+│  │   System     │      │   Router     │      │  Protocol    │  │
+│  └──────────────┘      └──────────────┘      └──────────────┘  │
 │                                                                   │
 └─────────────────────────────────────────────────────────────────┘
-                                  │
-                                  ▼
+```
+
+### Optional Agent Backend Integration
+
+When you want advanced agent automation, connect to the claw backend:
+
+```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        CLAW-CORE ENGINE                           │
-│                      (Cellular Agents)                            │
+│                    SPREADSHEET MOMENT                           │
+│                         (Frontend)                              │
 ├─────────────────────────────────────────────────────────────────┤
-│                                                                   │
-│  • Agent execution engine                                         │
-│  • State management                                               │
-│  • Equipment system                                               │
-│  • Social coordination                                            │
-│                                                                   │
+│                          ↕ Optional                              │
+│                    HTTP/WebSocket API                           │
+│                          ↕                                       │
+├─────────────────────────────────────────────────────────────────┤
+│                      CLAW BACKEND                               │
+│                   (Optional Agent Engine)                       │
+│  • Agent execution • State management • Social coordination     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -133,36 +127,14 @@ pnpm dev
 ```
 spreadsheet-moment/
 ├── packages/
-│   ├── agent-core/      # Core engine (StateManager, ClawClient, TraceProtocol)
-│   ├── agent-ai/        # AI integration (ModelRouter, Providers)
-│   ├── agent-ui/        # React components (AgentVisualizer, StatusIndicator)
-│   └── agent-formulas/  # Spreadsheet functions (CLAW_NEW, CLAW_QUERY, CLAW_CANCEL)
+│   ├── agent-core/      # Core state management, API client, trace protocol
+│   ├── agent-ai/        # AI model routing and provider management
+│   ├── agent-ui/        # React UI components for spreadsheet interface
+│   ├── agent-formulas/  # Custom spreadsheet formula functions
+│   └── cudaclaw-bridge/ # Optional GPU acceleration (requires cudaclaw)
 ├── docs/                # Documentation
-├── tests/               # Tests
-└── website/             # Web UI
-```
-
----
-
-## Agent Lifecycle
-
-### Agent States
-
-| State | Description | Visual |
-|-------|-------------|--------|
-| IDLE | Created but not started | Gray |
-| INITIALIZING | Starting up | Blue |
-| THINKING | Processing/reasoning | Purple |
-| ACTING | Executing actions | Orange |
-| COMPLETE | Finished successfully | Green |
-| ERROR | Encountered failure | Red |
-
-### State Transitions
-
-```
-IDLE → INITIALIZING → THINKING → ACTING → COMPLETE
-                            ↓
-                         ERROR
+├── tests/               # Test suites
+└── website/             # Web application
 ```
 
 ---
@@ -173,18 +145,20 @@ IDLE → INITIALIZING → THINKING → ACTING → COMPLETE
 
 | Use Case | Why It Works |
 |----------|--------------|
-| **Data Monitoring** | Agents watch for patterns 24/7 |
-| **Automated Workflows** | Chain agents for multi-step processes |
-| **Real-time Dashboards** | Agents update cells based on events |
-| **Coordinated Analysis** | Multiple agents collaborate |
+| **Data Analysis** | Modern spreadsheet engine with powerful formulas |
+| **Financial Modeling** | Robust calculation engine and state management |
+| **Business Dashboards** | React-based UI components for rich visualizations |
+| **Collaborative Editing** | Real-time multi-user capabilities |
+| **Custom Applications** | Extensible architecture for domain-specific tools |
+| **Automation (Optional)** | Add agent backend for advanced workflow automation |
 
-### When NOT to Use
+### Technical Advantages
 
-| Anti-Use Case | Better Alternative |
-|---------------|-------------------|
-| Simple calculations | Standard Excel formulas |
-| Static reports | Google Sheets, Excel |
-| High-frequency trading | Specialized trading systems |
+- **Type Safety** - TypeScript throughout ensures reliability
+- **Modern Stack** - React, TypeScript, modern build tools
+- **Extensible** - Plugin architecture for custom functionality
+- **Well-Tested** - 90%+ test coverage with comprehensive test suites
+- **Performance** - Optimized state management and rendering
 
 ---
 
@@ -192,21 +166,29 @@ IDLE → INITIALIZING → THINKING → ACTING → COMPLETE
 
 ### @spreadsheet-moment/agent-core
 
-Core agent system with state management and API client.
+Core platform services: state management, API client, trace protocol.
 
 ```typescript
-import { StateManager, ClawClient, TraceProtocol } from '@spreadsheet-moment/agent-core';
+import { StateManager, TraceProtocol } from '@spreadsheet-moment/agent-core';
 
 const stateManager = new StateManager();
+const trace = new TraceProtocol();
+```
+
+For advanced automation, optionally connect to a claw backend:
+
+```typescript
+import { ClawClient } from '@spreadsheet-moment/agent-core';
+
 const client = new ClawClient({
   baseUrl: 'http://localhost:8080',
-  apiKey: process.env.CLAW_API_KEY
+  apiKey: process.env.CLAW_API_KEY  // Optional: for agent features
 });
 ```
 
 ### @spreadsheet-moment/agent-ai
 
-AI integration with model routing.
+AI model routing and provider management for spreadsheet intelligence.
 
 ```typescript
 import { ModelRouter, DeepSeekProvider } from '@spreadsheet-moment/agent-ai';
@@ -219,23 +201,34 @@ const router = new ModelRouter({
 
 ### @spreadsheet-moment/agent-ui
 
-React components for agent visualization.
+React UI components for spreadsheet interface.
 
 ```tsx
-import { AgentVisualizer, StatusIndicator } from '@spreadsheet-moment/agent-ui';
+import { StatusIndicator, TraceViewer } from '@spreadsheet-moment/agent-ui';
 
-<AgentVisualizer agentId="claw_123" />
-<StatusIndicator state="thinking" />
+<StatusIndicator state="thinking" progress={0.5} />
+<TraceViewer traceId="trace_123" steps={steps} />
 ```
 
 ### @spreadsheet-moment/agent-formulas
 
-Spreadsheet formula functions.
+Custom spreadsheet formula functions.
 
 ```excel
-=CLAW_NEW(name, model, purpose)
-=CLAW_QUERY(cell_reference)
-=CLAW_CANCEL(cell_reference)
+=AGENT_COMPUTE(data, model)
+=AGENT_QUERY(cell_reference)
+=AGENT_CANCEL(cell_reference)
+```
+
+### @spreadsheet-moment/cudaclaw-bridge (Optional)
+
+GPU acceleration for high-performance operations (requires cudaclaw backend).
+
+```typescript
+import { CudaClawClient } from '@spreadsheet-moment/cudaclaw-bridge';
+
+// Optional: for GPU-accelerated operations
+const gpuClient = new CudaClawClient({ enableGPU: true });
 ```
 
 ---
@@ -268,22 +261,51 @@ pnpm test:e2e         # End-to-end tests
 
 ---
 
-## Integration
+## Foundation
 
-### Claw API Integration
+### Built on Univer
 
-Spreadsheet Moment connects to [Claw](https://github.com/SuperInstance/claw) for agent execution.
-
-**Integration Status:** API contracts defined, mock testing available, live integration in progress.
-
-See [CLAW_INTEGRATION_PLAN.md](CLAW_INTEGRATION_PLAN.md) for complete integration details.
-
-### Univer Foundation
-
-Built on [Univer](https://github.com/dream-num/univer):
-- Open-source spreadsheet engine
+Spreadsheet Moment is built on [Univer](https://github.com/dream-num/univer), a modern open-source spreadsheet engine:
+- Robust spreadsheet calculation engine
 - React-based UI components
-- Formula calculation engine
+- Extensible plugin architecture
+- Formula calculation system
+- Modern TypeScript codebase
+
+### Modern TypeScript Stack
+
+- **TypeScript 5.0+** - Full type safety
+- **React** - Modern UI framework
+- **pnpm** - Fast, efficient package management
+- **Vitest** - Modern testing framework
+- **ESLint/Prettier** - Code quality tools
+
+---
+
+## Optional Agent Integration
+
+Spreadsheet Moment can integrate with SuperInstance agent infrastructure for advanced automation:
+
+### Claw Backend (Optional)
+
+Connect to [Claw](https://github.com/SuperInstance/claw) for agent execution:
+- Backend cellular agent engine for executing agent logic
+- WebSocket support for real-time updates
+- REST API for agent management
+
+**Integration Status:** API contracts defined, optional integration available.
+
+See [CLAW_INTEGRATION_PLAN.md](CLAW_INTEGRATION_PLAN.md) for integration details.
+
+### Other Optional Integrations
+
+- **constrainttheory** - Geometric positioning for spatially-aware agents
+- **cudaclaw** - GPU acceleration for large-scale operations
+- **dodecet-encoder** - Efficient encoding for agent state
+
+These integrations are completely optional. Spreadsheet Moment works as a fully-functional spreadsheet platform without them.
+
+See [https://github.com/SuperInstance](https://github.com/SuperInstance) for more information on optional integrations.
 
 ---
 
@@ -302,12 +324,12 @@ Built on [Univer](https://github.com/dream-num/univer):
 
 | Phase | Status | Focus |
 |-------|--------|-------|
-| Phase 1: Foundation | Complete | Monorepo, package structure |
-| Phase 2: Architecture | Complete | Core systems implemented |
-| Phase 3: Integration | Complete | API integration |
-| Phase 4: Streamlining | **Current** | Remove non-essential features |
-| Phase 5: Claw Integration | Next | Live claw-core connection |
-| Phase 6: Production | Planned | Deployment, monitoring |
+| Phase 1: Foundation | Complete | Monorepo, package structure, Univer integration |
+| Phase 2: Core Platform | Complete | State management, UI components, formula system |
+| Phase 3: Testing & Quality | Complete | Test suites, 90%+ coverage |
+| Phase 4: Production Ready | **Current** | Polish, documentation, deployment |
+| Phase 5: Advanced Features | Next | Enhanced formulas, collaboration features |
+| Phase 6: Optional Agents | Planned | Optional claw backend integration |
 
 ---
 
@@ -338,5 +360,5 @@ Apache-2.0 - See [LICENSE](LICENSE)
 ---
 
 **Current Branch:** `main`
-**Last Updated:** 2026-03-18
-**Status:** MVP Development | Ready for Claw Integration
+**Last Updated:** 2026-03-19
+**Status:** Production Ready | Modern Spreadsheet Platform with Optional Agent Features

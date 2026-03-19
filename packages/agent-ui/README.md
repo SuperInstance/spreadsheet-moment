@@ -1,32 +1,44 @@
 # @spreadsheet-moment/agent-ui
 
-**React UI components** for agent visualization and interaction.
+**React UI components** for modern spreadsheet interface and visualization.
 
 [![Tests](https://img.shields.io/badge/Tests-100%25-brightgreen.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 [![Coverage](https://img.shields.io/badge/Coverage-70%25-brightgreen.svg)](https://github.com/SuperInstance/spreadsheet-moment)
 
 ## Overview
 
-The `@spreadsheet-moment/agent-ui` package provides React components for visualizing and interacting with agents in the Spreadsheet Moment platform.
+The `@spreadsheet-moment/agent-ui` package provides React components for building rich spreadsheet interfaces:
+- **StatusIndicator** - Visual status displays with animations
+- **TraceViewer** - Execution timeline visualization
+- **ReasoningStream** - Live streaming content display
+- **AgentVisualizer** (Optional) - Agent state visualization (requires agent features enabled)
+
+These components work standalone for general spreadsheet UI needs. The AgentVisualizer component is only needed if using optional agent backend features.
 
 ## Features
 
-### AgentVisualizer
-Pulsing biological agent display with real-time status:
+### StatusIndicator
+Visual status displays for operations:
 
 ```typescript
-import { AgentVisualizer } from '@spreadsheet-moment/agent-ui';
+import { StatusIndicator } from '@spreadsheet-moment/agent-ui';
 
-<AgentVisualizer
-  agentId="claw_123"
-  state="thinking"
-  confidence={0.8}
-  onStateChange={(newState) => console.log(newState)}
+<StatusIndicator
+  state="calculating"
+  progress={0.6}
+  message="Processing formula..."
+/>
+
+<StatusIndicator
+  state="complete"
+  message="Calculation complete"
 />
 ```
 
+States: `idle`, `calculating`, `analyzing`, `complete`, `error`
+
 ### TraceViewer
-Execution trace timeline visualization:
+Execution timeline visualization for debugging:
 
 ```typescript
 import { TraceViewer } from '@spreadsheet-moment/agent-ui';
@@ -38,29 +50,36 @@ import { TraceViewer } from '@spreadsheet-moment/agent-ui';
 />
 ```
 
-### StatusIndicator
-Real-time agent status with animations:
-
-```typescript
-import { StatusIndicator } from '@spreadsheet-moment/agent-ui';
-
-<StatusIndicator
-  state="thinking"
-  progress={0.6}
-  message="Analyzing data..."
-/>
-```
+Great for visualizing formula evaluation, data processing pipelines, and operation traces.
 
 ### ReasoningStream
-Live reasoning display with streaming updates:
+Live streaming content display:
 
 ```typescript
 import { ReasoningStream } from '@spreadsheet-moment/agent-ui';
 
 <ReasoningStream
-  agentId="claw_123"
-  streamUrl="ws://localhost:8080/ws"
-  onReasoningComplete={(result) => console.log(result)}
+  streamId="stream_123"
+  streamUrl="wss://api.deepseek.com/stream"
+  onComplete={(result) => console.log(result)}
+/>
+```
+
+Use for displaying streaming AI responses, live data feeds, or progressive computation results.
+
+### AgentVisualizer (Optional - Requires Agent Features)
+Agent state visualization with animations:
+
+> **Note:** This component is only needed if using optional agent backend features.
+
+```typescript
+import { AgentVisualizer } from '@spreadsheet-moment/agent-ui';
+
+<AgentVisualizer
+  agentId="agent_123"
+  state="thinking"
+  confidence={0.8}
+  onStateChange={(newState) => console.log(newState)}
 />
 ```
 
@@ -114,19 +133,22 @@ pnpm add @spreadsheet-moment/agent-ui
 
 ```typescript
 import {
-  AgentVisualizer,
-  TraceViewer,
   StatusIndicator,
+  TraceViewer,
   ReasoningStream
 } from '@spreadsheet-moment/agent-ui';
 
-function App() {
+function SpreadsheetApp() {
   return (
     <div>
-      <AgentVisualizer agentId="claw_123" state="thinking" />
-      <StatusIndicator state="thinking" progress={0.5} />
+      {/* Show operation status */}
+      <StatusIndicator state="calculating" progress={0.5} />
+
+      {/* Debug execution traces */}
       <TraceViewer traceId="trace_456" steps={steps} />
-      <ReasoningStream agentId="claw_123" />
+
+      {/* Display streaming content */}
+      <ReasoningStream streamId="stream_123" />
     </div>
   );
 }
@@ -135,13 +157,34 @@ function App() {
 ### Customization
 
 ```typescript
+<StatusIndicator
+  state="calculating"
+  progress={0.75}
+  size="large"
+  colorScheme="dark"
+  showProgress={true}
+  message="Processing 1000 rows..."
+/>
+
+<TraceViewer
+  steps={executionSteps}
+  colorScheme="dark"
+  showTimestamps={true}
+  expandable={true}
+/>
+```
+
+### Optional: Agent Features
+
+```typescript
+import { AgentVisualizer } from '@spreadsheet-moment/agent-ui';
+
+// Only needed if using agent backend
 <AgentVisualizer
-  agentId="claw_123"
+  agentId="agent_123"
   state="thinking"
   size="large"
   colorScheme="dark"
-  showLabel={true}
-  animationSpeed="slow"
   onStateChange={(state) => console.log(state)}
 />
 ```
@@ -192,27 +235,43 @@ function App() {
 ### CSS Variables
 
 ```css
---agent-color-idle: #9ca3af;
---agent-color-thinking: #8b5cf6;
---agent-color-acting: #f59e0b;
---agent-color-complete: #10b981;
---agent-color-error: #ef4444;
---agent-size-small: 24px;
---agent-size-medium: 48px;
---agent-size-large: 72px;
+/* Status colors */
+--status-color-idle: #9ca3af;
+--status-color-calculating: #3b82f6;
+--status-color-analyzing: #8b5cf6;
+--status-color-complete: #10b981;
+--status-color-error: #ef4444;
+
+/* Component sizes */
+--status-size-small: 24px;
+--status-size-medium: 48px;
+--status-size-large: 72px;
+
+/* Trace viewer */
+--trace-background: #1f2937;
+--trace-text: #f3f4f6;
+--trace-border: #374151;
 ```
 
 ### Custom Styles
 
 ```typescript
-import { AgentVisualizer } from '@spreadsheet-moment/agent-ui';
+import { StatusIndicator } from '@spreadsheet-moment/agent-ui';
 import './custom-styles.css';
 
-<AgentVisualizer
-  agentId="claw_123"
-  state="thinking"
-  className="custom-agent"
+<StatusIndicator
+  state="calculating"
+  className="custom-status"
 />
+```
+
+```css
+/* custom-styles.css */
+.custom-status {
+  --status-color-calculating: #6366f1;
+  font-family: 'Inter', sans-serif;
+  border-radius: 8px;
+}
 ```
 
 ## Testing

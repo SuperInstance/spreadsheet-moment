@@ -1,68 +1,89 @@
-# SpreadsheetMoment Documentation
+# Spreadsheet Moment Documentation
 
-Welcome to the SpreadsheetMoment documentation. This guide will help you get started with living spreadsheets powered by intelligent agents.
+Welcome to the Spreadsheet Moment documentation. This guide will help you build modern spreadsheet applications with TypeScript and React.
 
 ## 🚀 Quick Links
 
 - **[Getting Started](GETTING_STARTED.md)** — Setup and basic usage
 - **[Architecture](ARCHITECTURE.md)** — System design and components
-- **[Cell Agent API](CELL_AGENT_API.md)** — Complete API reference
-- **[I/O Connections](IO_CONNECTIONS.md)** — External integrations
-- **[OpenCLAW Integration](OPENCLAW_INTEGRATION.md)** — NLP system integration
+- **[API Reference](API_DOCUMENTATION.md)** — Complete API documentation
+- **[Formulas](FORMULAS.md)** — Built-in and custom formulas
+- **[Integration Guide](INTEGRATION_GUIDE.md)** — Connect with external systems
 
 ## 📚 Documentation Structure
 
 ### Core Guides
 
-- **Getting Started** — Install SpreadsheetMoment and create your first agent cell
-- **Architecture** — Understand how SpreadsheetMoment works under the hood
-- **Cell Agent API** — Complete API reference for cell agents
-- **I/O Connections** — Connect cells to hardware, APIs, and databases
+- **Getting Started** — Install Spreadsheet Moment and build your first app
+- **Architecture** — Understand the platform design and components
+- **API Reference** — Complete API documentation for all packages
+- **Formulas** — Built-in formulas and creating custom functions
+- **State Management** — Working with StateManager and TraceProtocol
 
 ### Advanced Topics
 
-- **OpenCLAW Integration** — Integrate with OpenCLAW NLP system
-- **Deployment** — Deploy to Cloudflare Workers, Docker, or desktop
-- **Performance** — Optimize your spreadsheets for speed and efficiency
+- **Deployment** — Deploy to production (Cloudflare Workers, Docker, cloud)
+- **Performance** — Optimize for speed and efficiency
+- **Testing** — Write tests for your spreadsheet applications
+- **Customization** — Extend with plugins and custom components
 
-### Educational Content
+### Optional Features
 
-- **[Educational](educational/)** — Introduction slides and tutorials
-- **[Technical](technical/)** — Deep-dive technical documentation
-- **[General](general/)** — Overview and concepts for non-technical users
+- **Agent Integration** — Connect to claw backend for advanced automation (optional)
+- **GPU Acceleration** — Use cudaclaw-bridge for high-performance operations (optional)
+- **AI Features** — Integrate AI providers for intelligent operations
 
 ## 🎯 Getting Started
 
 ### 1. Installation
 
 ```bash
-npm install @spreadsheet-moment/core
+pnpm install
+pnpm build
 ```
 
-### 2. Create Your First Agent Cell
+### 2. Create Your First Spreadsheet
 
 ```typescript
-import { SuperInstance } from '@spreadsheet-moment/core';
+import { StateManager } from '@spreadsheet-moment/agent-core';
+import { UniversalWorkbook } from '@univer/core';
 
-const cell = SuperInstance.create({
-  type: 'sensor',
-  behavior: 'monitor',
-  connections: ['arduino://A0']
+// Initialize state management
+const stateManager = new StateManager();
+
+// Create workbook
+const workbook = new UniversalWorkbook({
+  name: 'My Spreadsheet',
+  sheets: [{ name: 'Sheet1' }]
 });
 ```
 
-### 3. Connect to Hardware
+### 3. Add Formulas
 
 ```typescript
-cell.connect('arduino', { pin: 'A0', mode: 'input' });
+// Standard formulas work out of the box
+workbook.setCell('A1', '=SUM(B1:B10)');
+workbook.setCell('A2', '=AVERAGE(C1:C10)');
+
+// AI-powered formulas (optional - requires AI provider API key)
+import { AI_COMPUTE } from '@spreadsheet-moment/agent-formulas';
+workbook.setCell('A3', '=AI_COMPUTE("Calculate trend", B1:B10, "deepseek-chat")');
 ```
 
-### 4. Watch Your Cell Come Alive
+### 4. Build Your UI
 
 ```typescript
-cell.on('update', (data) => {
-  console.log('Sensor reading:', data);
-});
+import { StatusIndicator, TraceViewer } from '@spreadsheet-moment/agent-ui';
+
+function SpreadsheetApp() {
+  return (
+    <div>
+      <UniversalWorkbook />
+      <StatusIndicator state="calculating" />
+      <TraceViewer steps={executionSteps} />
+    </div>
+  );
+}
 ```
 
 ## 🌐 Live Resources
@@ -86,6 +107,6 @@ We welcome contributions! See [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelin
 
 ---
 
-**From ancient cells to living spreadsheets — the next evolution of data.**
+**Modern spreadsheet platform built with TypeScript, React, and Univer.**
 
-*Powered by SuperInstance — Distributed intelligence for everyone.*
+*Built by SuperInstance — Open-source spreadsheet innovation.*

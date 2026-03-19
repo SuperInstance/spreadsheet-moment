@@ -1,8 +1,10 @@
 # Production Deployment Guide
 
 **Version:** 1.0.0 - Week 4: Production Deployment
-**Date:** 2026-03-15
+**Date:** 2026-03-19
 **Status:** Production Ready
+
+> **Note:** This guide covers deployment for Spreadsheet Moment with optional claw backend integration. The claw-specific sections (ClawClient, WebSocket, etc.) are only needed if you're using the optional agent features. For basic spreadsheet deployment without agents, you can skip those sections.
 
 ---
 

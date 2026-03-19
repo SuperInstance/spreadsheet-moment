@@ -1,12 +1,14 @@
-# SpreadsheetMoment Research Papers
+# Spreadsheet Moment Research Papers
 
-SpreadsheetMoment is built on peer-reviewed research from the SuperInstance project.
+Spreadsheet Moment is built on research from the SuperInstance project. These papers inform the optional agent integration features.
 
 ## Complete Research Collection
 
 **60+ research papers:** https://github.com/SuperInstance/SuperInstance-papers
 
-## Foundational Papers for SpreadsheetMoment
+## Papers Informing Optional Agent Features
+
+> **Note:** These papers relate to the optional agent integration features. The core Spreadsheet Moment platform is a modern TypeScript/React spreadsheet that works independently of these research topics.
 
 ### Core Algorithms
 
@@ -52,11 +54,11 @@ SpreadsheetMoment is built on peer-reviewed research from the SuperInstance proj
 
 ```bibtex
 @software{spreadsheetmoment2026,
-  title={SpreadsheetMoment: Living Spreadsheets with Intelligent Agents},
+  title={Spreadsheet Moment: Modern Spreadsheet Platform with Optional Agent Features},
   author={SuperInstance Team},
   year={2026},
   url={https://github.com/SuperInstance/spreadsheet-moment},
-  note={Built on SuperInstance research papers (P01-P65)}
+  note={Built on Univer with optional agent integration informed by SuperInstance research}
 }
 ```
 
