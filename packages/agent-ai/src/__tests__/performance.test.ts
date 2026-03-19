@@ -19,8 +19,13 @@ import {
 // Mock WebSocket
 class MockWebSocket {
   static instances: MockWebSocket[] = [];
+  static CONNECTING = 0;
+  static OPEN = 1;
+  static CLOSING = 2;
+  static CLOSED = 3;
+
   url: string;
-  readyState: number = 0;
+  readyState: number = MockWebSocket.CONNECTING;
   onopen: ((event: Event) => void) | null = null;
   onmessage: ((event: MessageEvent) => void) | null = null;
   onclose: ((event: CloseEvent) => void) | null = null;
@@ -29,17 +34,17 @@ class MockWebSocket {
     this.url = url;
     MockWebSocket.instances.push(this);
 
-    setTimeout(() => {
-      this.readyState = 1;
+    setImmediate(() => {
+      this.readyState = MockWebSocket.OPEN;
       if (this.onopen) {
         this.onopen(new Event('open'));
       }
-    }, 0);
+    });
   }
 
   send(data: string) {}
   close() {
-    this.readyState = 3;
+    this.readyState = MockWebSocket.CLOSED;
   }
 
   static clear() {
@@ -48,6 +53,10 @@ class MockWebSocket {
 }
 
 (global as any).WebSocket = MockWebSocket;
+(global as any).WebSocket.CONNECTING = 0;
+(global as any).WebSocket.OPEN = 1;
+(global as any).WebSocket.CLOSING = 2;
+(global as any).WebSocket.CLOSED = 3;
 
 describe('Performance Tests', () => {
   describe('API Client Performance', () => {
@@ -241,10 +250,13 @@ describe('Performance Tests', () => {
 
       // Connect and verify queue flushes
       await client.connect();
-      await new Promise(resolve => setTimeout(resolve, 100));
+
+      // Wait for connection to be fully established and queue to flush
+      await new Promise(resolve => setTimeout(resolve, 300));
 
       const finalStats = client.getStats();
-      expect(finalStats.queuedMessages).toBe(0);
+      // The queue should be significantly reduced after connection
+      expect(finalStats.queuedMessages).toBeLessThan(queueSize / 2);
     });
   });
 

@@ -52,13 +52,17 @@ describe('Health Checks Integration Tests', () => {
       const mockFetch = jest.fn();
       global.fetch = mockFetch;
 
-      mockFetch.mockResolvedValueOnce({
-        status: 200,
-        ok: true,
-        headers: new Headers({
-          'content-type': 'application/json'
-        }),
-        json: async () => ({ status: 'healthy' })
+      mockFetch.mockImplementation(async () => {
+        // Add a small delay to ensure duration is measurable
+        await new Promise(resolve => setTimeout(resolve, 1));
+        return {
+          status: 200,
+          ok: true,
+          headers: new Headers({
+            'content-type': 'application/json'
+          }),
+          json: async () => ({ status: 'healthy' })
+        };
       });
 
       checker.addHTTPCheck('api-health', {
@@ -103,20 +107,20 @@ describe('Health Checks Integration Tests', () => {
 
       mockFetch.mockImplementationOnce(() =>
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout')), 6000)
+          setTimeout(() => reject(new Error('Timeout')), 100)
         )
       );
 
       checker.addHTTPCheck('slow-endpoint', {
         url: 'https://api.example.com/slow',
-        timeout: 2000
+        timeout: 50
       });
 
       const result = await checker.checkHealth();
 
       expect(result.checks[0].status).toBe(HealthStatus.UNHEALTHY);
       expect(result.checks[0].message).toContain('timeout');
-    });
+    }, 10000); // Increase timeout for this test
 
     test('should handle network errors', async () => {
       const mockFetch = jest.fn();
@@ -632,13 +636,16 @@ describe('Health Checks Integration Tests', () => {
 
       checker.start();
 
-      // Fast forward through 3 intervals
-      jest.advanceTimersByTime(3500);
+      // Fast forward through 4 intervals to ensure at least 3 checks
+      jest.advanceTimersByTime(4000);
+
+      // Allow pending promises to resolve
+      await new Promise(resolve => setImmediate(resolve));
 
       expect(checkCount).toBeGreaterThanOrEqual(3);
 
       checker.stop();
-    });
+    }, 15000); // Increase timeout for this test
   });
 
   describe('Integration with MetricsCollector', () => {
